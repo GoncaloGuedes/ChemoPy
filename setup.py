@@ -3,9 +3,6 @@ from setuptools import find_packages, setup
 with open("./README.md", "r") as f:
     long_description = f.read()
 
-# Read requirements.txt and extract dependencies
-with open("requirements.txt", "r") as req_file:
-    requirements = list(req_file.read().splitlines())
 
 setup(
     name="chemopy",
