@@ -5,7 +5,7 @@ with open("./README.md", "r") as f:
 
 # Read requirements.txt and extract dependencies
 with open("requirements.txt", "r") as req_file:
-    requirements = req_file.read().splitlines()
+    requirements = req_file.read()
 
 setup(
     name="chemopy",
