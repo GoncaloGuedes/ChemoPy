@@ -5,7 +5,7 @@ with open("./README.md", "r") as f:
 
 # Read requirements.txt and extract dependencies
 with open("requirements.txt", "r") as req_file:
-    requirements = req_file.read().splitlines()
+    requirements = list(req_file.read().splitlines())
 
 setup(
     name="chemopy",
@@ -23,5 +23,11 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.10",
-    install_requires=requirements,  # Use the extracted dependencies from requirements.txt
+    install_requires=["numpy==1.25.0",
+                      "openpyxl==3.1.2",
+                      "pandas==2.0.3",
+                      "scikit-learn==1.3.0",
+                      "scipy==1.11.1"
+                      ]
+
 )
