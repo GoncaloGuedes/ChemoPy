@@ -41,7 +41,7 @@ class OrthogonalProjection(BaseEstimator, TransformerMixin):
         super().__init__()
         self.P = P 
 
-    def fit(self, X):
+    def fit(self, X, y=None):
         """
         Fit the transformer to the data.
 
