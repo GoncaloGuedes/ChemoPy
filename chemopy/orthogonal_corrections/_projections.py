@@ -76,7 +76,6 @@ class OrthogonalProjection(BaseEstimator, TransformerMixin):
         X_proj : array-like, shape (n_samples, n_features)
             Transformed data after orthogonal projection.
         """
-        I = np.eye(self.P.shape[0])
         X_proj = X - np.dot(np.dot(X, self.P), self.P.T)
         return X_proj
 
