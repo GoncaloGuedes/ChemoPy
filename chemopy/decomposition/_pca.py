@@ -152,7 +152,7 @@ class PCA(BaseEstimator, TransformerMixin):
         t2_limit = self.n_components * (n_samples - 1) / (n_samples - self.n_components) * f_value
         
         # Save Variables
-        self.loadings_ = loadings
+        self.loadings_ = loadings.T
         self.explained_variance_ = explained_variance * 100
         self.explained_variance_accumulative = np.cumsum(self.explained_variance_)
         self.q_residuals_ = q_residuals
@@ -184,10 +184,10 @@ class PCA(BaseEstimator, TransformerMixin):
             X -= self.mean_
         
         # Project the new sample onto the principal components
-        scores = np.dot(X, self.loadings_.T)
+        scores = np.dot(X, self.loadings_)
         
         # Calculate the Q residuals for the new sample
-        q = X - np.dot(scores, self.loadings_)
+        q = X - np.dot(scores, self.loadings_.T)
         q_residuals = np.sum(q ** 2, axis=1)
         
         # Calculate Hotelling's T-squared for the new sample
