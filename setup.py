@@ -21,10 +21,10 @@ setup(
     ],
     python_requires=">=3.10",
     install_requires=[
-        "numpy==1.25.0",
-        "openpyxl==3.1.2",
-        "pandas==2.0.3",
-        "scikit-learn==1.3.0",
-        "scipy==1.11.1",
+        "numpy",
+        "openpyxl",
+        "pandas",
+        "scikit-learn",
+        "scipy",
     ],
 )
