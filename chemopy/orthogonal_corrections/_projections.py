@@ -1,5 +1,5 @@
-from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class OrthogonalProjection(BaseEstimator, TransformerMixin):
@@ -39,7 +39,7 @@ class OrthogonalProjection(BaseEstimator, TransformerMixin):
             The orthogonal matrix used for projection.
         """
         super().__init__()
-        self.P = P 
+        self.P = P
 
     def fit(self, X, y=None):
         """
@@ -58,7 +58,7 @@ class OrthogonalProjection(BaseEstimator, TransformerMixin):
             The fitted transformer instance.
         """
         return self
-    
+
     def transform(self, X, y=None):
         """
         Apply orthogonal projection to the input data.
@@ -78,4 +78,3 @@ class OrthogonalProjection(BaseEstimator, TransformerMixin):
         """
         X_proj = X - np.dot(np.dot(X, self.P), self.P.T)
         return X_proj
-

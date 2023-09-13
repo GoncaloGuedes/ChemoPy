@@ -1,7 +1,12 @@
 import unittest
+
 import numpy as np
-from sklearn.utils.estimator_checks import check_transformer_general, check_estimators_unfitted
-from chemopy.preprocessing import TransmittanceToAbsorbance, AbsoluteValues
+from sklearn.utils.estimator_checks import (
+    check_estimators_unfitted,
+    check_transformer_general,
+)
+
+from chemopy.preprocessing import AbsoluteValues, TransmittanceToAbsorbance
 
 
 class TransmittanceToAbsorbanceTest(unittest.TestCase):
@@ -33,8 +38,7 @@ class TransmittanceToAbsorbanceTest(unittest.TestCase):
 class AbsoluteValuesTest(unittest.TestCase):
     def setUp(self):
         self.transformer = AbsoluteValues()
-        self.X = np.array([[-1 , -2, 3],
-                           [-4, 5, -6]])
+        self.X = np.array([[-1, -2, 3], [-4, 5, -6]])
 
     def test_fit(self):
         # The transformer doesn't have any trainable parameters,
@@ -43,9 +47,7 @@ class AbsoluteValuesTest(unittest.TestCase):
 
     def test_transform(self):
         transformed_X = self.transformer.fit_transform(self.X)
-        expected_output = np.array([[1, 2, 3],
-                                    [4, 5, 6]
-                                    ])  # Expected absorbance values
+        expected_output = np.array([[1, 2, 3], [4, 5, 6]])  # Expected absorbance values
         np.testing.assert_equal(transformed_X, expected_output)
 
     def test_transform_unfitted(self):
@@ -57,6 +59,7 @@ class AbsoluteValuesTest(unittest.TestCase):
         self.transformer = TransmittanceToAbsorbance().fit(self.X)
         # Check the transformer against scikit-learn's general transformer tests
         check_transformer_general("AbsoluteValues", self.transformer)
-        
+
+
 if __name__ == "__main__":
     unittest.main()

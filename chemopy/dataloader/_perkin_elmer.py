@@ -1,5 +1,6 @@
-import os
 import glob
+import os
+
 import pandas as pd
 
 
@@ -14,12 +15,12 @@ def load_perkin_elmer_data(pathname: str, excel_name: str = None) -> pd.DataFram
     Returns:
         pd.DataFrame: DataFrame containing the imported data.
     """
-    csv_files = glob.glob(os.path.join(pathname, '*.csv'))
+    csv_files = glob.glob(os.path.join(pathname, "*.csv"))
     data = []
     names = []
 
     for csv_file in csv_files:
-        names.append(os.path.basename(csv_file).replace('.csv', ''))
+        names.append(os.path.basename(csv_file).replace(".csv", ""))
         df_aux = pd.read_csv(csv_file, skiprows=1)
         data.append(df_aux.iloc[:, 1].to_list())
 
@@ -27,6 +28,6 @@ def load_perkin_elmer_data(pathname: str, excel_name: str = None) -> pd.DataFram
     df.insert(0, "Name", names)
 
     if excel_name:
-        csv_path = os.path.join(pathname, f'{excel_name}.xlsx')
+        csv_path = os.path.join(pathname, f"{excel_name}.xlsx")
         df.to_excel(csv_path, index=False)
     return df

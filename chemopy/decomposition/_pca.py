@@ -1,7 +1,7 @@
-from sklearn.base import BaseEstimator, TransformerMixin
-from scipy.stats import f
-from scipy.special import ndtri
 import numpy as np
+from scipy.special import ndtri
+from scipy.stats import f
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class PCA(BaseEstimator, TransformerMixin):
@@ -63,7 +63,9 @@ class PCA(BaseEstimator, TransformerMixin):
         The Hotelling's T-squared statistics of the transformed data (new samples).
     """
 
-    def __init__(self, n_components=2, mean_center=False, confidence_level=0.95) -> None:
+    def __init__(
+        self, n_components=2, mean_center=False, confidence_level=0.95
+    ) -> None:
         """
         Initialize the PCA transformer.
 
@@ -82,7 +84,7 @@ class PCA(BaseEstimator, TransformerMixin):
         self.n_components = n_components
         self.mean_center = mean_center
         self.confidence_level = confidence_level
-    
+
     def fit(self, X):
         """
         Fit the transformer to the data, performing PCA and calculating control limits for Q residuals
@@ -102,18 +104,18 @@ class PCA(BaseEstimator, TransformerMixin):
         if self.mean_center:
             self.mean_ = np.mean(X, axis=0)
             X -= self.mean_
-        
+
         # number of samples
         n_samples = X.shape[0]
-        
+
         # calculate the SVD of the centered data
         u, s, vt = np.linalg.svd(X)
-        
+
         # keep only the top n_components
-        u = u[:, :self.n_components]
+        u = u[:, : self.n_components]
         s_all_components = s
-        s = s[:self.n_components]
-        vt = vt[:self.n_components]
+        s = s[: self.n_components]
+        vt = vt[: self.n_components]
 
         # calculate the loadings
         loadings = vt
@@ -122,35 +124,44 @@ class PCA(BaseEstimator, TransformerMixin):
         scores = np.dot(X, loadings.T)
 
         # calculate the explained variance
-        eig_val = s**2 / (n_samples-1)
+        eig_val = s**2 / (n_samples - 1)
         explained_variance = eig_val / eig_val.sum()
 
         # calculate the Q residuals
         q = X - np.dot(scores, loadings)
         q_residuals = np.sum(q**2, axis=1)
-        
+
         # calculate the Q limit
-        eig_val_all_components = s_all_components[self.n_components:]**2 / (n_samples-1)
+        eig_val_all_components = s_all_components[self.n_components :] ** 2 / (
+            n_samples - 1
+        )
         t1 = sum(eig_val_all_components)
-        t2 = sum(eig_val_all_components ** 2)
-        t3 = sum(eig_val_all_components ** 3)
-        ho = 1 - (2 * t1 * t3) / (3 * t2 ** 2)
+        t2 = sum(eig_val_all_components**2)
+        t3 = sum(eig_val_all_components**3)
+        ho = 1 - (2 * t1 * t3) / (3 * t2**2)
         ca = ndtri(self.confidence_level)
         term1 = (ho * ca * (2 * t2) ** (0.5)) / t1
-        term2 = (t2 * ho * (ho - 1)) / (t1 ** 2)
+        term2 = (t2 * ho * (ho - 1)) / (t1**2)
         q_limit = t1 * (term1 + 1 + term2) ** (1 / ho)
 
         # calculate the Hotelling T^2 statistic
         # T^2 = scores.T * sigma *scores
-        sigma = np.linalg.inv(np.diag(eig_val)) 
+        sigma = np.linalg.inv(np.diag(eig_val))
         aux = np.dot(scores, sigma)
         t_hotelling = np.dot(aux, scores.T)
         t_hotelling = np.diagonal(t_hotelling)
 
         # # calculate the T^2 limit
-        f_value = f.ppf(self.confidence_level, self.n_components, n_samples - self.n_components)
-        t2_limit = self.n_components * (n_samples - 1) / (n_samples - self.n_components) * f_value
-        
+        f_value = f.ppf(
+            self.confidence_level, self.n_components, n_samples - self.n_components
+        )
+        t2_limit = (
+            self.n_components
+            * (n_samples - 1)
+            / (n_samples - self.n_components)
+            * f_value
+        )
+
         # Save Variables
         self.loadings_ = loadings.T
         self.explained_variance_ = explained_variance * 100
@@ -161,7 +172,7 @@ class PCA(BaseEstimator, TransformerMixin):
         self.t_limit_ = t2_limit
         self._sigma = sigma
         return self
-    
+
     def transform(self, X, y=None):
         """
         Apply PCA to the input data, projecting it onto the principal components.
@@ -182,19 +193,19 @@ class PCA(BaseEstimator, TransformerMixin):
         # Mean center
         if self.mean_center:
             X -= self.mean_
-        
+
         # Project the new sample onto the principal components
         scores = np.dot(X, self.loadings_)
-        
+
         # Calculate the Q residuals for the new sample
         q = X - np.dot(scores, self.loadings_.T)
-        q_residuals = np.sum(q ** 2, axis=1)
-        
+        q_residuals = np.sum(q**2, axis=1)
+
         # Calculate Hotelling's T-squared for the new sample
         aux = np.dot(scores, self._sigma)
         t_hotelling = np.dot(aux, scores.T)
         t_hotelling = np.diagonal(t_hotelling)
-        
+
         # # Save Variables
         self.q_residuals_predicted_ = q_residuals
         self.t_hotelling_predicted_ = t_hotelling

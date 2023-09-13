@@ -1,5 +1,5 @@
 from ._projections import OrthogonalProjection
 
-__all__ = ["OrthogonalProjection",
-           
-           ]
+__all__ = [
+    "OrthogonalProjection",
+]
