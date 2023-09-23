@@ -172,7 +172,7 @@ class Centering(BaseEstimator, TransformerMixin):
 
         return self
 
-    def transform(self, X):
+    def transform(self, X, y=None):
         """
         Center the input data X by subtracting the center (mean or median) of each feature.
 
