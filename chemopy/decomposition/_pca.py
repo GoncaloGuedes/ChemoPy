@@ -85,7 +85,7 @@ class PCA(BaseEstimator, TransformerMixin):
         self.mean_center = mean_center
         self.confidence_level = confidence_level
 
-    def fit(self, X):
+    def fit(self, X, y=None):
         """
         Fit the transformer to the data, performing PCA and calculating control limits for Q residuals
         and Hotelling's T-squared.
