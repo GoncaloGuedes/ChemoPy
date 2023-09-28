@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def load_texas_instruments_data(
-    pathname: str, excel_name: str = None, factory_reference: bool = False
+    pathname: str, excel_name: str = None, factory_reference: list = None
 ) -> pd.DataFrame:
     """
     Import data from Texas Instruments CSV files and return a pandas DataFrame.
@@ -27,8 +27,8 @@ def load_texas_instruments_data(
         names.append(os.path.basename(csv_file).replace(".csv", ""))
         df_aux = pd.read_csv(csv_file, skiprows=21, encoding="cp1252")
 
-        if factory_reference:
-            reference = df_aux["Reference Signal (unitless)"].to_numpy()
+        if factory_reference is not None:
+            reference = np.array(factory_reference)
             intensity = df_aux["Sample Signal (unitless)"].to_numpy()
             absorbance = np.log10((reference / intensity))
             absorbance = list(absorbance)
