@@ -73,7 +73,7 @@ class Centering(BaseEstimator, TransformerMixin):
     Parameters
     ----------
     center_method : str, optional (default='mean')
-        The method to use for centering. Can be 'mean' or 'median'.
+        The method to use for centering. Can be 'mean, 'median' or 'passthrough'.
 
     Attributes
     ----------
@@ -169,6 +169,9 @@ class Centering(BaseEstimator, TransformerMixin):
         elif self.center_method == "median":
             self.center_method_ = "median"
             self.center_value_ = np.median(X, axis=0)
+        elif self.center_method == "passthrough":
+            self.center_method_ = "passthrough"
+            self.center_value_ = np.zeros(X.shape[1])
 
         return self
 
