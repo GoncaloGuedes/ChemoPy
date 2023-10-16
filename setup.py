@@ -6,7 +6,7 @@ with open("./README.md", "r") as f:
 
 setup(
     name="chemopy",
-    version="0.0.10",
+    version="0.0.11",
     description="An package that contains preprocessing, model transfer and orthogonal corrections for Spectroscopy",
     packages=find_packages(where="."),
     long_description=long_description,
