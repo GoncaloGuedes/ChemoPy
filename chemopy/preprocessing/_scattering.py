@@ -15,6 +15,9 @@ class SNV(BaseEstimator, TransformerMixin):
     Attributes:
     None
     """
+    def __init__(self, trainable=True) -> None:
+        super().__init__()
+        self.trainable = trainable
 
     def fit(self, X: np.ndarray, y: np.ndarray = None) -> np.ndarray:
         """
@@ -27,6 +30,8 @@ class SNV(BaseEstimator, TransformerMixin):
         Returns:
         self (SNV): The fitted SNV transformer object.
         """
+        if self.trainable is False:
+            return X
         X = check_array(
             X,
             ensure_2d=True,
@@ -48,6 +53,8 @@ class SNV(BaseEstimator, TransformerMixin):
         X_snv (np.ndarray): Transformed data of shape (n_samples, n_features).
         """
         check_is_fitted(self)
+        if self.trainable is False:
+            return X
 
         X = check_array(
             X,
