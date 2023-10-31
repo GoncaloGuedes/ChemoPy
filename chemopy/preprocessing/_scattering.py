@@ -78,7 +78,7 @@ class SNV(BaseEstimator, TransformerMixin):
 class MSC(BaseEstimator, TransformerMixin):
     def __init__(
         self,
-        reference: Union[str, List[Any], np.ndarray] = "Mean",
+        reference: Union[str, List[Any], np.ndarray] = "mean",
         trainable: bool = True,
     ) -> None:
         """
@@ -89,14 +89,15 @@ class MSC(BaseEstimator, TransformerMixin):
             If reference is a list or array, it should have the same number of features as the input data.
         trainable (bool): If True, the MSC transformer will be fitted to the data. If False, the MSC transformer is not fitted and the transform method will return the input data.
         """
-        super().__init()
+        super().__init__()
         if not (
-            reference == "Mean"
-            or reference == "Median"
+            reference == "mean"
+            or reference == "median"
             or isinstance(reference, (list, np.ndarray))
         ):
             raise ValueError("Reference must be 'Mean,' 'Median,' or a list/array.")
         self.reference = reference
+        self.trainable = trainable
 
     def fit(self, X: np.ndarray, y: np.ndarray = None) -> "MSC":
         """
@@ -110,9 +111,9 @@ class MSC(BaseEstimator, TransformerMixin):
         self (MSC): The fitted MSC transformer object.
         """
         X = check_array(X, ensure_2d=True)
-        if self.reference == "Mean":
+        if self.reference == "mean":
             self.reference_ = np.mean(X, axis=0)
-        elif self.reference == "Median":
+        elif self.reference == "median":
             self.reference_ = np.median(X, axis=0)
         else:
             if X.shape[1] != self.reference.shape[1]:
@@ -149,5 +150,5 @@ class MSC(BaseEstimator, TransformerMixin):
         poly_coefficients = np.polyfit(self.reference_, X.T, 1)
         a = poly_coefficients[0].reshape(-1, 1)
         b = poly_coefficients[1].reshape(-1, 1)
-        X_msc = (X - a) / b
+        X_msc = (X - b) / a
         return X_msc
