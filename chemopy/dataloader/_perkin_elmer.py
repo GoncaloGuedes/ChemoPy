@@ -1,24 +1,32 @@
+""" Module to import data from Perkin Elmer CSV files."""
 import glob
 import os
+from typing import Optional
 
 import pandas as pd
 
 
-def load_perkin_elmer_data(pathname: str, excel_name: str = None) -> pd.DataFrame:
-    """
-    Import data from Perkin Elmer CSV files and return a pandas DataFrame.
+def load_perkin_elmer_data(pathname: str, excel_name: Optional[str] = None) -> pd.DataFrame:
+    """ Load data from Perkin Elmer CSV files.
 
-    Args:
-        pathname (str): Path to the directory containing the CSV files.
-        csv_name (str, optional): Name of the output CSV file. Defaults to None.
+    Parameters
+    ----------
+    pathname : str
+        Path to the folder containing the CSV files.
+        Note: The CSV files must be all from perkin elmer.
+    excel_name : str, optional
+       If given, the data will be saved as an excel file with the given name.
 
-    Returns:
-        pd.DataFrame: DataFrame containing the imported data.
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing the data from the CSV files. The first column is the name of the file.
+        The other columns are the data from the CSV files.
     """
     csv_files = glob.glob(os.path.join(pathname, "*.csv"))
     data = []
     names = []
-
+    df_aux = pd.DataFrame()
     for csv_file in csv_files:
         names.append(os.path.basename(csv_file).replace(".csv", ""))
         df_aux = pd.read_csv(csv_file, skiprows=1)

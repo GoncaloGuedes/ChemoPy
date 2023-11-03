@@ -1,27 +1,39 @@
+""" Module to import data from Texas Instruments CSV files."""
 import glob
 import os
+from typing import Optional
 
 import numpy as np
 import pandas as pd
 
 
 def load_texas_instruments_data(
-    pathname: str, excel_name: str = None, factory_reference: list = None
+    pathname: str, excel_name: Optional[str] = None, factory_reference: Optional[list] = None
 ) -> pd.DataFrame:
-    """
-    Import data from Texas Instruments CSV files and return a pandas DataFrame.
+    """ Import data from Texas Instruments CSV files.
 
-    Args:
-        pathname (str): Path to the directory containing the CSV files.
-        csv_name (str, optional): Name of the output CSV file. Defaults to None.
-        factory_reference (str): Use the factory reference
+    Parameters
+    ----------
+    pathname : str
+        Path to the folder containing the CSV files.
+        Note: The CSV files must be all from Texas Instruments.
+    excel_name : Optional[str], optional
+        If given, the data will be saved as an excel file with the given name, 
+        default is None.
+    factory_reference : Optional[list], optional
+        if given, the data will be converted to absorbance using the given reference, 
+        default is None.
 
-    Returns:
-        pd.DataFrame: DataFrame containing the imported data.
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing the data from the CSV files. The first column is the name of the file.
+        The other columns are the data from the CSV files.
     """
     csv_files = glob.glob(os.path.join(pathname, "*.csv"))
     data = []
     names = []
+    df_aux = pd.DataFrame()
 
     for csv_file in csv_files:
         names.append(os.path.basename(csv_file).replace(".csv", ""))
