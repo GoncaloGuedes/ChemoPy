@@ -140,7 +140,8 @@ class Centering(BaseEstimator, TransformerMixin):
             The method to use for centering. Can be 'mean' or 'median'.
         """
         if center_method not in ["mean", "median"]:
-            raise ValueError("Invalid centering method. Use 'mean' or 'median'.")
+            raise ValueError(
+                "Invalid centering method. Use 'mean' or 'median'.")
         self.center_method = center_method
 
     def fit(self, X, y=None):

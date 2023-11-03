@@ -216,7 +216,7 @@ class SelectIntervals(BaseEstimator, TransformerMixin):
         selected_arrays = []
         for interval in self.intervals:
             # select the specific interval and append it to the list
-            selected_arrays.append(X[:, interval[0] : interval[1]])
+            selected_arrays.append(X[:, interval[0]: interval[1]])
         # concatenate the selected arrays along the columns to create final array
         final_array = np.hstack(selected_arrays)
         return final_array

@@ -132,7 +132,7 @@ class PCA(BaseEstimator, TransformerMixin):
         q_residuals = np.sum(q**2, axis=1)
 
         # calculate the Q limit
-        eig_val_all_components = s_all_components[self.n_components :] ** 2 / (
+        eig_val_all_components = s_all_components[self.n_components:] ** 2 / (
             n_samples - 1
         )
         t1 = sum(eig_val_all_components)
@@ -165,7 +165,8 @@ class PCA(BaseEstimator, TransformerMixin):
         # Save Variables
         self.loadings_ = loadings.T
         self.explained_variance_ = explained_variance * 100
-        self.explained_variance_accumulative = np.cumsum(self.explained_variance_)
+        self.explained_variance_accumulative = np.cumsum(
+            self.explained_variance_)
         self.q_residuals_ = q_residuals
         self.q_limit_ = q_limit
         self.t_hotelling_ = t_hotelling

@@ -26,7 +26,8 @@ class TestLoadTexasInstrumentsData(unittest.TestCase):
 
         # Call the function to load data and save CSV
         output_csv_name = "output"
-        df = load_texas_instruments_data(test_data_path, csv_name=output_csv_name)
+        df = load_texas_instruments_data(
+            test_data_path, csv_name=output_csv_name)
 
         # Assert DataFrame column names and data
         self.assertEqual(df.columns.tolist(), ["Name", 100, 101])
@@ -35,7 +36,8 @@ class TestLoadTexasInstrumentsData(unittest.TestCase):
         self.assertEqual(df[101].tolist(), [2, 2])
 
         # Assert that the output CSV file was saved
-        output_csv_path = os.path.join(test_data_path, f"{output_csv_name}.csv")
+        output_csv_path = os.path.join(
+            test_data_path, f"{output_csv_name}.csv")
         self.assertTrue(os.path.exists(output_csv_path))
 
         # Clean up the generated test data files and output CSV

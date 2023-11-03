@@ -95,7 +95,8 @@ class MSC(BaseEstimator, TransformerMixin):
             or reference == "median"
             or isinstance(reference, (list, np.ndarray))
         ):
-            raise ValueError("Reference must be 'Mean,' 'Median,' or a list/array.")
+            raise ValueError(
+                "Reference must be 'Mean,' 'Median,' or a list/array.")
         self.reference = reference
         self.trainable = trainable
 

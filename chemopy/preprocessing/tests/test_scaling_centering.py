@@ -29,7 +29,8 @@ class ScaleMaxMinTest(unittest.TestCase):
         expected_output = np.array(
             [[0, 0.5, 1], [0, 0.5, 1]]
         )  # Expected absorbance values
-        np.testing.assert_array_almost_equal(transformed_X, expected_output, decimal=3)
+        np.testing.assert_array_almost_equal(
+            transformed_X, expected_output, decimal=3)
 
     def test_transformer_conformance(self):
         self.transformer = ScaleMaxMin().fit(self.X)
@@ -61,7 +62,8 @@ class CenteringTest(unittest.TestCase):
         expected_output = np.array(
             [[-1.5, -1.5, -1.5], [1.5, 1.5, 1.5]]
         )  # Expected absorbance values
-        np.testing.assert_array_almost_equal(transformed_X, expected_output, decimal=2)
+        np.testing.assert_array_almost_equal(
+            transformed_X, expected_output, decimal=2)
 
     def test_transform_median(self):
         transformer = Centering("median")
@@ -69,7 +71,8 @@ class CenteringTest(unittest.TestCase):
         expected_output = np.array(
             [[-1.5, -1.5, -1.5], [1.5, 1.5, 1.5]]
         )  # Expected absorbance values
-        np.testing.assert_array_almost_equal(transformed_X, expected_output, decimal=2)
+        np.testing.assert_array_almost_equal(
+            transformed_X, expected_output, decimal=2)
 
     def test_transformer_conformance(self):
         self.transformer = Centering()

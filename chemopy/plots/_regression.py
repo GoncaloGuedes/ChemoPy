@@ -25,11 +25,13 @@ def plot_cv_regression(estimator: BaseEstimator, X_train, y_train, title=None) -
     # Plot CV vs. actual values
     plt.scatter(y_train, cv_pred, alpha=0.5)
     plt.scatter(y_train, y_pred, alpha=0.5)
-    plt.plot([min(y_train), max(y_train)], [min(y_train), max(y_train)], "k--", lw=2)
+    plt.plot([min(y_train), max(y_train)], [
+             min(y_train), max(y_train)], "k--", lw=2)
     plt.xlabel("Actual Values")
     plt.ylabel("CV Predictions")
     plt.title(f"{title} CV vs. Actual Values")
-    plt.legend(["CV predictions", "Calibration predictions", "Perfect prediction"])
+    plt.legend(
+        ["CV predictions", "Calibration predictions", "Perfect prediction"])
 
     # Format R2 and RMSECV with three decimal points
     r2_str = f"{r2:.3f}"
