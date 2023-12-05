@@ -19,5 +19,8 @@
   "python.analysis.typeCheckingMode": "basic",
   "pylint.args": [
     "--ignored-modules=scipy.special"
+  ],
+  "python.analysis.extraPaths": [
+    "**/test" // Will match any folder named "test" and its subdirectories
   ]
 }
