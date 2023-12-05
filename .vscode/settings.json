@@ -22,6 +22,6 @@
     "--disable=C0103" // C0103 is the Pylint code for snake_casing issues
   ],
   "python.analysis.extraPaths": [
-    "**/test" // Will match any folder named "test" and its subdirectories
+    "**/tests" // Will match any folder named "test" and its subdirectories
   ]
 }
