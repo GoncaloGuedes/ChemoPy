@@ -14,13 +14,6 @@ repos:
     hooks:
     -   id: check-added-large-files
 
-# Run tests with pytest
--   repo:
-    rev: v1.0.0
-    hooks:
-    -   id: pytest-via-tox
-        args: ["-e", "py38"]
-
 
 # Test commit
 # -   repo: local

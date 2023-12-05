@@ -20,7 +20,7 @@ class TestLoadPerkinElmerData(unittest.TestCase):
     def setUp(self):
         self.pathname = "chemopy/dataloader/tests/test_files/perkin_elmer"
         self.excel_name = "Perkin_Elmer_Dataframe"
-        self.expected_columns = ['Names', 1000.0, 1000.5, 1001.0]
+        self.expected_columns = ['Name', 1000.0, 1000.5, 1001.0]
         self.expected_values = [['PE_1', 0.4428, 0.4398, 0.4384],
                                 ['PE_2', 0.4367, 0.4384, 0.4403]]
 
