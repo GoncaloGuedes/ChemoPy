@@ -1,50 +1,50 @@
+""" Test the Perkin Elmer data loader module. """
 import os
 import unittest
 
 import pandas as pd
 
+# replace with the actual module name
 from chemopy.dataloader import load_texas_instruments_data
 
 
 class TestLoadTexasInstrumentsData(unittest.TestCase):
-    def test_load_perkin_elmer_data(self):
-        # Test data directory and files
-        test_data_path = r"C:\Goncalo\ChemomPy\chemopy\dataloader\tests\test_data"
-        csv_files = ["file1.csv", "file2.csv"]
+    """ Test the load_texas_instruments_data function.
 
-        # Generate sample data files for testing
-        for csv_file in csv_files:
-            file_path = os.path.join(test_data_path, csv_file)
-            df = pd.DataFrame(
-                {
-                    "wavelength": [0] * 20 + ["Wavelength (nm)", 100, 101],
-                    "data": [0] * 20 + ["Absorbance (AU)", 1, 2],
-                },
-                columns=None,
-            )
-            df.to_csv(file_path, index=False)
+    Parameters
+    ----------
+    unittest : 
+        test case class that is used to create new test cases.
+    """
 
-        # Call the function to load data and save CSV
-        output_csv_name = "output"
-        df = load_texas_instruments_data(
-            test_data_path, csv_name=output_csv_name)
+    def setUp(self):
+        self.pathname = "chemopy/dataloader/tests/test_files/texas_instruments"
+        self.excel_name = "Perkin_Elmer_Dataframe"
+        self.expected_columns = ['Name', 900.837839, 904.733104, 909.920066]
+        self.expected_values = [['TI_1', 0.804932, 0.796678, 0.789913],
+                                ['TI_2', 1.034885, 1.035648, 1.024181]]
 
-        # Assert DataFrame column names and data
-        self.assertEqual(df.columns.tolist(), ["Name", 100, 101])
-        self.assertEqual(df["Name"].tolist(), ["file1", "file2"])
-        self.assertEqual(df[100].tolist(), [1, 1])
-        self.assertEqual(df[101].tolist(), [2, 2])
+    def test_load_data(self):
+        """ Test the load_texas_instruments_data function.
+        """
+        df = load_texas_instruments_data(self.pathname)
+        self.assertIsInstance(df, pd.DataFrame)
+        self.assertListEqual(list(df.columns[:4]), self.expected_columns[:4])
+        self.assertListEqual(
+            df.iloc[:2, :4].values.tolist(), self.expected_values)
 
-        # Assert that the output CSV file was saved
-        output_csv_path = os.path.join(
-            test_data_path, f"{output_csv_name}.csv")
-        self.assertTrue(os.path.exists(output_csv_path))
+    def test_load_data_with_excel(self):
+        """ Test the load_texas_instruments_data function and save excel_name.
+        """
+        df = load_texas_instruments_data(self.pathname, self.excel_name)
+        self.assertIsInstance(df, pd.DataFrame)
+        self.assertListEqual(list(df.columns[:4]), self.expected_columns)
+        self.assertTrue(os.path.exists(os.path.join(
+            self.pathname, f"{self.excel_name}.xlsx")))
 
-        # Clean up the generated test data files and output CSV
-        for csv_file in csv_files:
-            file_path = os.path.join(test_data_path, csv_file)
-            os.remove(file_path)
-        os.remove(output_csv_path)
+    def tearDown(self):
+        if os.path.exists(os.path.join(self.pathname, f"{self.excel_name}.xlsx")):
+            os.remove(os.path.join(self.pathname, f"{self.excel_name}.xlsx"))
 
 
 if __name__ == "__main__":

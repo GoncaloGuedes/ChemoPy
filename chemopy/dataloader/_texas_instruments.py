@@ -31,6 +31,7 @@ def load_texas_instruments_data(
         The other columns are the data from the CSV files.
     """
     csv_files = glob.glob(os.path.join(pathname, "*.csv"))
+    csv_files.sort()
     data = []
     names = []
     df_aux = pd.DataFrame()
