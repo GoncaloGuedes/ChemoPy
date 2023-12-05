@@ -2,7 +2,7 @@
 name = "chemopy"
 version = "0.1.0"
 description = ""
-authors = ["GoncaloGuedes_CorkSupply <dp@corksupply.pt>"]
+authors = ["GoncaloGuedes <goncalo.manuelguedes@gmail.com.pt>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
