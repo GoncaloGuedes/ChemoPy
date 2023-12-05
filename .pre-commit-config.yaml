@@ -9,6 +9,20 @@ repos:
     rev: "v2.0.4"
     hooks:
     -   id: autopep8
+-   repo:
+    rev: v1.0.0
+    hooks:
+    -   id: check-added-large-files
+
+# Run tests with pytest
+-   repo:
+    rev: v1.0.0
+    hooks:
+    -   id: pytest-via-tox
+        args: ["-e", "py38"]
+
+
+
 # -   repo: local
 #     hooks:
 #     -   id: pylint
