@@ -75,7 +75,8 @@ class PCA(BaseEstimator, TransformerMixin):
 
         Parameters
         ----------
-        X : array-like or pd.DataFrame, shape (n_samples, n_features). Missing values are not allowed.
+        X : array-like or pd.DataFrame, shape (n_samples, n_features). 
+        Missing values are not allowed.
         y : None, it is only present for compatibility with sklearn
 
         Returns
@@ -207,7 +208,8 @@ class PCA(BaseEstimator, TransformerMixin):
         self.t_hotelling_predicted_ = t_hotelling
         return scores
 
-    def __calculate_explained_variance(self, singular_values: Union[np.ndarray, List[float]], n_samples: int) -> Union[np.ndarray, List[float]]:
+    def __calculate_explained_variance(self, singular_values: Union[np.ndarray, List[float]],
+                                       n_samples: int) -> Union[np.ndarray, List[float]]:
         """Calculate the explained variance ratio.
 
         Parameters

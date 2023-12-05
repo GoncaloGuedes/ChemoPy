@@ -18,7 +18,8 @@
   "autoDocstring.docstringFormat": "numpy",
   "python.analysis.typeCheckingMode": "basic",
   "pylint.args": [
-    "--ignored-modules=scipy.special"
+    "--ignored-modules=scipy.special",
+    "--disable=C0103" // C0103 is the Pylint code for snake_casing issues
   ],
   "python.analysis.extraPaths": [
     "**/test" // Will match any folder named "test" and its subdirectories
