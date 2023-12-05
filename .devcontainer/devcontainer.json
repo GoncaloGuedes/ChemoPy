@@ -7,23 +7,24 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "njpwerner.autodocstring",
-                "ms-python.autopep8",
-                "ms-python.vscode-pylance",
-                "ms-python.python",
-                "ms-python.pylint",
-                "ms-python.isort",
-                "streetsidesoftware.code-spell-checker",
-                "GitHub.copilot",
-                "GitHub.copilot-chat",
-                "eamodio.gitlens",
-                "VisualStudioExptTeam.vscodeintellicode",
-                "VisualStudioExptTeam.intellicode-api-usage-examples",
-                "christian-kohler.path-intellisense",
-                "elagil.pre-commit-helper",
-                "ms-python.vscode-pylance",
-                "tamasfe.even-better-toml"
-            ]
+				"njpwerner.autodocstring",
+				"ms-python.autopep8",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"ms-python.pylint",
+				"ms-python.isort",
+				"streetsidesoftware.code-spell-checker",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"eamodio.gitlens",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"VisualStudioExptTeam.intellicode-api-usage-examples",
+				"christian-kohler.path-intellisense",
+				"elagil.pre-commit-helper",
+				"ms-python.vscode-pylance",
+				"tamasfe.even-better-toml",
+				"Codium.codium"
+			]
         }
     },
 

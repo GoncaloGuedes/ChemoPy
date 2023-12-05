@@ -6,6 +6,11 @@
       "source.organizeImports": true
     },
   },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.isort": true,
+    "source.fixAll.black": true,
+    "source.fixAll.pep8": true
+  },
   "isort.args": [
     "--profile",
     "black"
