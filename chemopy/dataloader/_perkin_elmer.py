@@ -24,6 +24,9 @@ def load_perkin_elmer_data(pathname: str, excel_name: Optional[str] = None) -> p
         The other columns are the data from the CSV files.
     """
     csv_files = glob.glob(os.path.join(pathname, "*.csv"))
+    # sort the files by name
+    csv_files.sort()
+
     data = []
     names = []
     df_aux = pd.DataFrame()
