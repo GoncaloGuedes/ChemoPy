@@ -11,5 +11,8 @@
     "black"
   ],
   "autoDocstring.docstringFormat": "numpy",
-  "python.analysis.typeCheckingMode": "basic"
+  "python.analysis.typeCheckingMode": "basic",
+  "pylint.args": [
+    "--ignored-modules=scipy.special"
+  ]
 }
