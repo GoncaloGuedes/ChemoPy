@@ -2,8 +2,8 @@
 from typing import List, Union
 
 import numpy as np
-from scipy.special import ndtri
-from scipy.stats import f
+import numpy.typing as npt
+from scipy.stats import norm
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import (
     check_array,
@@ -106,21 +106,21 @@ class PCA(BaseEstimator, TransformerMixin):
         scores = np.dot(X, v_transpose.T)
 
         # calculate the explained variance
-        explained_variance = self.__calculate_explained_variance(
+        explained_variance = self.__explained_variance(
             singular_values, n_samples)
 
         # calculate q residuals
-        q_residuals = self.__calculate_q_residuals(X, scores, v_transpose.T)
+        q_residuals = self.__q_residuals(X, scores, v_transpose.T)
 
         # calculate q limit
-        q_limit = self.__calculate_q_limit(singular_values, n_samples)
+        q_limit = self.__confidence_interval(q_residuals)
 
         # calculate hotelling t^2
-        t_hotelling = self.__calculate_hotelling_t2(
+        t_hotelling = self.__hotelling_t2(
             scores, np.diag(singular_values**2))
 
         # calculate t^2 limit
-        t_limit = self.__calculate_hotelling_t2_limit(n_samples)
+        t_limit = self.__confidence_interval(t_hotelling)
 
         # Save Variables
         self.loadings_ = v_transpose.T
@@ -196,11 +196,11 @@ class PCA(BaseEstimator, TransformerMixin):
         scores = np.dot(X, self.loadings_)
 
         # Calculate the Q residuals for the new sample
-        q_residuals = self.__calculate_q_residuals(
+        q_residuals = self.__q_residuals(
             X, scores, self.loadings_)
 
         # Calculate Hotelling's T-squared for the new sample
-        t_hotelling = self.__calculate_hotelling_t2(
+        t_hotelling = self.__hotelling_t2(
             scores, self.__covariance_matrix)  # type: ignore
 
         # Save Variables
@@ -208,8 +208,8 @@ class PCA(BaseEstimator, TransformerMixin):
         self.t_hotelling_predicted_ = t_hotelling
         return scores
 
-    def __calculate_explained_variance(self, singular_values: Union[np.ndarray, List[float]],
-                                       n_samples: int) -> Union[np.ndarray, List[float]]:
+    def __explained_variance(self, singular_values: Union[npt.NDArray[np.float64], List[float]],
+                             n_samples: int) -> npt.NDArray[np.float64]:
         """Calculate the explained variance ratio.
 
         Parameters
@@ -228,8 +228,8 @@ class PCA(BaseEstimator, TransformerMixin):
         explained_variance = eig_val / eig_val.sum()
         return explained_variance
 
-    def __calculate_q_residuals(self, X: np.ndarray, scores: np.ndarray,
-                                loadings: np.ndarray) -> np.ndarray:
+    def __q_residuals(self, X: npt.NDArray[np.float64], scores: npt.NDArray[np.float64],
+                      loadings: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Calculate the Q residuals.
 
@@ -246,46 +246,25 @@ class PCA(BaseEstimator, TransformerMixin):
         -------
         numpy.ndarray
             The Q residuals.
+
+        Notes
+        -----
+        The Q residuals are a measure of the difference between the original data matrix X
+        and the reconstructed data matrix obtained by multiplying the scores and loadings matrices.
+
+        The Q residuals are calculated as the sum of squared differences between each row of X
+        and its corresponding reconstructed row.
+
+        The Q residuals can be used to assess the quality of the PCA model and identify outliers
+        in the data.
+
         """
         q = X - np.dot(scores, loadings.T)
         q_residuals = np.sum(q**2, axis=1)
         return q_residuals
 
-    def __calculate_q_limit(self, singular_values: Union[np.ndarray, List[float]],
-                            n_samples: int) -> float:
-        """
-        Calculate the Q limit for PCA decomposition.
-
-        Parameters
-        ----------
-        singular_values : array-like
-            Singular values obtained from PCA decomposition.
-        n_samples : int
-            Number of samples in the dataset.
-
-        Returns
-        -------
-        float
-            The Q limit value.
-
-        """
-        eigen_values = np.square(singular_values) * (n_samples - 1)
-        sum_eigen_values = sum(eigen_values)
-        sum_squared_eigen_values = sum(eigen_values**2)
-        sum_cubed_eigen_values = sum(eigen_values**3)
-        hoeffding = 1 - (2 * sum_eigen_values * sum_cubed_eigen_values) / \
-            (3 * sum_squared_eigen_values**2)
-        inverse_normal_distribution = ndtri(self.confidence_level)
-        term1 = (hoeffding * inverse_normal_distribution *
-                 (2 * sum_squared_eigen_values) ** (0.5)) / sum_eigen_values
-        term2 = (sum_squared_eigen_values * hoeffding *
-                 (hoeffding - 1)) / (sum_eigen_values**2)
-
-        q_limit = sum_eigen_values * (term1 + 1 + term2) ** (1 / hoeffding)
-        return q_limit
-
-    def __calculate_hotelling_t2(self, scores_matrix: np.ndarray,
-                                 covariance_matrix: Union[np.ndarray, List[float]]):
+    def __hotelling_t2(self, scores_matrix: npt.NDArray[np.float64],
+                       covariance_matrix: Union[npt.NDArray[np.float64], List[float]]) -> npt.NDArray[np.float64]:
         """
         Calculate the Hotelling's T^2 statistic.
 
@@ -306,21 +285,24 @@ class PCA(BaseEstimator, TransformerMixin):
         hotelling_t2 = np.diagonal(hotelling_t2)
         return hotelling_t2
 
-    def __calculate_hotelling_t2_limit(self, n_samples: int):
-        """Calculate the Hotelling's T^2 limit.
+    def __confidence_interval(self, population: Union[npt.NDArray[np.float64], List[float]]) -> float:
+        """ Calculate the confidence interval for the population.
 
         Parameters
         ----------
-        n_samples : int
-            The number of samples.
+        population : Union[np.ndarray, List[float]]
+            The population. It can be either Q residuals or Hotelling's T^2.
+
 
         Returns
         -------
         float
-            The Hotelling's T^2 limit.
+            The confidence interval. 
         """
-        f_value = f.ppf(self.confidence_level, self.n_components,
-                        n_samples - self.n_components)
-        t2_limit = (self.n_components * (n_samples - 1) /
-                    (n_samples - self.n_components) * f_value)
-        return t2_limit
+        # Assuming population follow a normal distribution
+        mu, std = norm.fit(population)
+
+        # Calculate the confidence interval
+        alpha = 1 - self.confidence_level
+        interval = norm.ppf(1 - alpha / 2, loc=mu, scale=std)
+        return interval  # type: ignore
