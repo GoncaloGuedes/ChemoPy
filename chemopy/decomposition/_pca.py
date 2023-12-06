@@ -264,7 +264,8 @@ class PCA(BaseEstimator, TransformerMixin):
         return q_residuals
 
     def __hotelling_t2(self, scores_matrix: npt.NDArray[np.float64],
-                       covariance_matrix: Union[npt.NDArray[np.float64], List[float]]) -> npt.NDArray[np.float64]:
+                       covariance_matrix: Union[npt.NDArray[np.float64],
+                                                List[float]]) -> npt.NDArray[np.float64]:
         """
         Calculate the Hotelling's T^2 statistic.
 
@@ -285,7 +286,8 @@ class PCA(BaseEstimator, TransformerMixin):
         hotelling_t2 = np.diagonal(hotelling_t2)
         return hotelling_t2
 
-    def __confidence_interval(self, population: Union[npt.NDArray[np.float64], List[float]]) -> float:
+    def __confidence_interval(self, population: Union[npt.NDArray[np.float64],
+                                                      List[float]]) -> float:
         """ Calculate the confidence interval for the population.
 
         Parameters
