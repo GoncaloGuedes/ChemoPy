@@ -31,8 +31,7 @@ class TestPCA(unittest.TestCase):
     # PCA can fit a numpy array
     def test_fit_numpy_array(self):
         pca = PCA(n_components=2, mean_center=True)
-        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9],
-                        [10, 11, 12], [13, 14, 15]])
+        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [13, 14, 15]])
         pca.fit(data)
         self.assertIsNotNone(pca.loadings_)
         self.assertIsNotNone(pca.explained_variance_)
@@ -45,8 +44,7 @@ class TestPCA(unittest.TestCase):
     # PCA can transform a numpy array
     def test_transform_numpy_array(self):
         pca = PCA(n_components=2, mean_center=True)
-        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9],
-                        [10, 11, 12], [13, 14, 15]])
+        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [13, 14, 15]])
         pca.fit(data)
         transformed_data = pca.transform(data)
         self.assertIsNotNone(transformed_data)
@@ -54,8 +52,7 @@ class TestPCA(unittest.TestCase):
     # PCA can predict a numpy array
     def test_predict_numpy_array(self):
         pca = PCA(n_components=2, mean_center=True)
-        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9],
-                        [10, 11, 12], [13, 14, 15]])
+        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [13, 14, 15]])
         pca.fit(data)
         predicted_data = pca.predict(data)
         self.assertIsNotNone(predicted_data)
@@ -65,8 +62,7 @@ class TestPCA(unittest.TestCase):
     # PCA can be fit, transformed, and predicted in sequence
     def test_fit_transform_predict_sequence(self):
         pca = PCA(n_components=2, mean_center=True)
-        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9],
-                        [10, 11, 12], [13, 14, 15]])
+        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [13, 14, 15]])
         pca.fit(data)
         transformed_data = pca.transform(data)
         predicted_data = pca.predict(data)
@@ -90,19 +86,17 @@ class TestPCA(unittest.TestCase):
     # PCA throws a ValueError when calling the transform method before the fit method
     def test_transform_before_fit(self):
         pca = PCA(n_components=2, mean_center=True)
-        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9],
-                        [10, 11, 12], [13, 14, 15]])
+        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [13, 14, 15]])
         with self.assertRaises(ValueError):
             pca.transform(data)
 
     # PCA throws a ValueError when calling the predict method before the fit method
     def test_predict_before_fit(self):
         pca = PCA(n_components=2, mean_center=True)
-        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9],
-                        [10, 11, 12], [13, 14, 15]])
+        data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [13, 14, 15]])
         with self.assertRaises(ValueError):
             pca.predict(data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

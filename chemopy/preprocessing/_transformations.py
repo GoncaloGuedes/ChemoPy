@@ -31,8 +31,7 @@ class TransmittanceToAbsorbance(BaseEstimator, TransformerMixin):
         Returns:
         self (object): The fitted transformer object.
         """
-        X = check_array(X, ensure_2d=True,
-                        force_all_finite=True, accept_sparse=True)
+        X = check_array(X, ensure_2d=True, force_all_finite=True, accept_sparse=True)
 
         self.n_features_in_ = np.shape(X)[1]
         self.X_ = X
@@ -91,8 +90,7 @@ class AbsoluteValues(BaseEstimator, TransformerMixin):
         Returns:
         self (object): The fitted transformer object.
         """
-        X = check_array(X, ensure_2d=True,
-                        force_all_finite=True, accept_sparse=True)
+        X = check_array(X, ensure_2d=True, force_all_finite=True, accept_sparse=True)
 
         self.n_features_in_ = np.shape(X)[1]
         self.X_ = X

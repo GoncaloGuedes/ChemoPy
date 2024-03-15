@@ -1,4 +1,5 @@
 """ Module to import data from Texas Instruments CSV files."""
+
 import glob
 import os
 from typing import Optional
@@ -8,9 +9,11 @@ import pandas as pd
 
 
 def load_texas_instruments_data(
-    pathname: str, excel_name: Optional[str] = None, factory_reference: Optional[list] = None
+    pathname: str,
+    excel_name: Optional[str] = None,
+    factory_reference: Optional[list] = None,
 ) -> pd.DataFrame:
-    """ Import data from Texas Instruments CSV files.
+    """Import data from Texas Instruments CSV files.
 
     Parameters
     ----------
@@ -18,10 +21,10 @@ def load_texas_instruments_data(
         Path to the folder containing the CSV files.
         Note: The CSV files must be all from Texas Instruments.
     excel_name : Optional[str], optional
-        If given, the data will be saved as an excel file with the given name, 
+        If given, the data will be saved as an excel file with the given name,
         default is None.
     factory_reference : Optional[list], optional
-        if given, the data will be converted to absorbance using the given reference, 
+        if given, the data will be converted to absorbance using the given reference,
         default is None.
 
     Returns

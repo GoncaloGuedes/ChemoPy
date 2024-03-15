@@ -3,13 +3,13 @@
     "editor.defaultFormatter": "ms-python.autopep8",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     },
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.isort": true,
-    "source.fixAll.black": true,
-    "source.fixAll.pep8": true
+    "source.fixAll.isort": "explicit",
+    "source.fixAll.black": "explicit",
+    "source.fixAll.pep8": "explicit"
   },
   "isort.args": [
     "--profile",

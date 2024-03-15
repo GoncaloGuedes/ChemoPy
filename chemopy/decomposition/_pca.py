@@ -1,4 +1,5 @@
 """ Principal Component Analysis (PCA) Transformer. """
+
 from typing import List, Union
 
 import numpy as np
@@ -47,8 +48,12 @@ class PCA(BaseEstimator, TransformerMixin):
       T-squared limit at the specified confidence level.
     """
 
-    def __init__(self, n_components: int = 2, mean_center: bool = False,
-                 confidence_level: float = 0.95):
+    def __init__(
+        self,
+        n_components: int = 2,
+        mean_center: bool = False,
+        confidence_level: float = 0.95,
+    ):
         super().__init__()
         self.n_components = n_components
         self.mean_center = mean_center
@@ -69,7 +74,7 @@ class PCA(BaseEstimator, TransformerMixin):
         self.t_hotelling_predicted_ = None
 
     def fit(self, X, y=None):
-        """ Fit the PCA model to the input data.
+        """Fit the PCA model to the input data.
 
         Parameters
         ----------
@@ -83,8 +88,12 @@ class PCA(BaseEstimator, TransformerMixin):
         self : PCA
             Fitted PCA model.
         """
-        X = check_array(X, accept_sparse=False, ensure_min_samples=5,
-                        ensure_min_features=self.n_components)
+        X = check_array(
+            X,
+            accept_sparse=False,
+            ensure_min_samples=5,
+            ensure_min_features=self.n_components,
+        )
 
         if self.mean_center:
             self.mean_ = np.mean(X, axis=0)
@@ -97,16 +106,15 @@ class PCA(BaseEstimator, TransformerMixin):
         singular_vectors, singular_values, v_transpose = np.linalg.svd(X)
 
         # keep only the top n_components
-        singular_vectors = singular_vectors[:, :self.n_components]
-        singular_values = singular_values[:self.n_components]
-        v_transpose = v_transpose[:self.n_components]
+        singular_vectors = singular_vectors[:, : self.n_components]
+        singular_values = singular_values[: self.n_components]
+        v_transpose = v_transpose[: self.n_components]
 
         # project the data onto the principal components
         scores = np.dot(X, v_transpose.T)
 
         # calculate the explained variance
-        explained_variance = self.__explained_variance(
-            singular_values, n_samples)
+        explained_variance = self.__explained_variance(singular_values, n_samples)
 
         # calculate q residuals
         q_residuals = self.__q_residuals(X, scores, v_transpose.T)
@@ -115,8 +123,7 @@ class PCA(BaseEstimator, TransformerMixin):
         q_limit = self.__confidence_interval(q_residuals)
 
         # calculate hotelling t^2
-        t_hotelling = self.__hotelling_t2(
-            scores, np.diag(singular_values**2))
+        t_hotelling = self.__hotelling_t2(scores, np.diag(singular_values**2))
 
         # calculate t^2 limit
         t_limit = self.__confidence_interval(t_hotelling)
@@ -124,8 +131,7 @@ class PCA(BaseEstimator, TransformerMixin):
         # Save Variables
         self.loadings_ = v_transpose.T
         self.explained_variance_ = explained_variance * 100
-        self.explained_variance_accumulative = np.cumsum(
-            self.explained_variance_)
+        self.explained_variance_accumulative = np.cumsum(self.explained_variance_)
         self.q_residuals_ = q_residuals
         self.q_limit_ = q_limit
         self.t_hotelling_ = t_hotelling
@@ -161,14 +167,16 @@ class PCA(BaseEstimator, TransformerMixin):
 
         if self.loadings_ is None:
             raise ValueError(
-                "The model has not been fitted yet. Please call fit() first.")
+                "The model has not been fitted yet. Please call fit() first."
+            )
 
         if self.mean_center:
             X = X - self.mean_
         # Project the new sample onto the principal components
         if self.loadings_ is None:
             raise ValueError(
-                "The model has not been fitted yet. Please call fit() first.")
+                "The model has not been fitted yet. Please call fit() first."
+            )
         scores = np.dot(X, self.loadings_)
         return scores
 
@@ -196,7 +204,8 @@ class PCA(BaseEstimator, TransformerMixin):
         check_consistent_length(X)
         if self.loadings_ is None:
             raise ValueError(
-                "The model has not been fitted yet. Please call fit() first.")
+                "The model has not been fitted yet. Please call fit() first."
+            )
 
         check_is_fitted(self, attributes=["loadings_"])
         if self.mean_center:
@@ -205,26 +214,30 @@ class PCA(BaseEstimator, TransformerMixin):
         # Project the new sample onto the principal components
         if self.loadings_ is None:
             raise ValueError(
-                "The model has not been fitted yet. Please call fit() first.")
+                "The model has not been fitted yet. Please call fit() first."
+            )
 
         # Project the new sample onto the principal components
         scores = np.dot(X, self.loadings_)
 
         # Calculate the Q residuals for the new sample
-        q_residuals = self.__q_residuals(
-            X, scores, self.loadings_)
+        q_residuals = self.__q_residuals(X, scores, self.loadings_)
 
         # Calculate Hotelling's T-squared for the new sample
         t_hotelling = self.__hotelling_t2(
-            scores, self.__covariance_matrix)  # type: ignore
+            scores, self.__covariance_matrix
+        )  # type: ignore
 
         # Save Variables
         self.q_residuals_predicted_ = q_residuals
         self.t_hotelling_predicted_ = t_hotelling
         return scores
 
-    def __explained_variance(self, singular_values: Union[npt.NDArray[np.float64], List[float]],
-                             n_samples: int) -> npt.NDArray[np.float64]:
+    def __explained_variance(
+        self,
+        singular_values: Union[npt.NDArray[np.float64], List[float]],
+        n_samples: int,
+    ) -> npt.NDArray[np.float64]:
         """Calculate the explained variance ratio.
 
         Parameters
@@ -243,8 +256,12 @@ class PCA(BaseEstimator, TransformerMixin):
         explained_variance = eig_val / eig_val.sum()
         return explained_variance
 
-    def __q_residuals(self, X: npt.NDArray[np.float64], scores: npt.NDArray[np.float64],
-                      loadings: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    def __q_residuals(
+        self,
+        X: npt.NDArray[np.float64],
+        scores: npt.NDArray[np.float64],
+        loadings: npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.float64]:
         """
         Calculate the Q residuals.
 
@@ -278,9 +295,11 @@ class PCA(BaseEstimator, TransformerMixin):
         q_residuals = np.sum(q**2, axis=1)
         return q_residuals
 
-    def __hotelling_t2(self, scores_matrix: npt.NDArray[np.float64],
-                       covariance_matrix: Union[npt.NDArray[np.float64],
-                                                List[float]]) -> npt.NDArray[np.float64]:
+    def __hotelling_t2(
+        self,
+        scores_matrix: npt.NDArray[np.float64],
+        covariance_matrix: Union[npt.NDArray[np.float64], List[float]],
+    ) -> npt.NDArray[np.float64]:
         """
         Calculate the Hotelling's T^2 statistic.
 
@@ -301,9 +320,10 @@ class PCA(BaseEstimator, TransformerMixin):
         hotelling_t2 = np.diagonal(hotelling_t2)
         return hotelling_t2
 
-    def __confidence_interval(self, population: Union[npt.NDArray[np.float64],
-                                                      List[float]]) -> float:
-        """ Calculate the confidence interval for the population.
+    def __confidence_interval(
+        self, population: Union[npt.NDArray[np.float64], List[float]]
+    ) -> float:
+        """Calculate the confidence interval for the population.
 
         Parameters
         ----------
@@ -314,7 +334,7 @@ class PCA(BaseEstimator, TransformerMixin):
         Returns
         -------
         float
-            The confidence interval. 
+            The confidence interval.
         """
         # Assuming population follow a normal distribution
         mu, std = norm.fit(population)

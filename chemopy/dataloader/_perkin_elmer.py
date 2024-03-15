@@ -1,4 +1,5 @@
 """ Module to import data from Perkin Elmer CSV files."""
+
 import glob
 import os
 from typing import Optional
@@ -6,8 +7,10 @@ from typing import Optional
 import pandas as pd
 
 
-def load_perkin_elmer_data(pathname: str, excel_name: Optional[str] = None) -> pd.DataFrame:
-    """ Load data from Perkin Elmer CSV files.
+def load_perkin_elmer_data(
+    pathname: str, excel_name: Optional[str] = None
+) -> pd.DataFrame:
+    """Load data from Perkin Elmer CSV files.
 
     Parameters
     ----------
