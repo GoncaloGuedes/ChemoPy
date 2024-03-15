@@ -237,16 +237,17 @@ class SelectIntervals(BaseEstimator, TransformerMixin):
 class Detrend(BaseEstimator, TransformerMixin):
     """
     Transformer to remove the linear trend from the input data.
-    
+
     Methods
     -------
     fit(X, y=None)
         Do nothing and return self.
-    
+
     transform(X, y=None)
         Remove the linear trend from the input data X.
-        
+
     """
+
     def fit(self, X, y=None):
         return self
 

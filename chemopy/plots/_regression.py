@@ -30,7 +30,7 @@ def plot_cv_regression(
 
     # Compute CV predictions on the training set
     cv_pred = cross_val_predict(
-        estimator.best_estimator_, # type:ignore
+        estimator.best_estimator_,  # type:ignore
         X_train,
         y_train,
         cv=estimator.n_splits_,  # type:ignore
