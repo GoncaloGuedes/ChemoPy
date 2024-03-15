@@ -99,35 +99,6 @@ class Centering(BaseEstimator, TransformerMixin):
     ----------
     center_method : str, optional (default='mean')
         The method to use for centering. Can be 'mean' or 'median'.
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> from sklearn.pipeline import Pipeline
-    >>> from sklearn.datasets import load_iris
-    >>> from sklearn.linear_model import LogisticRegression
-    >>> from sklearn.model_selection import train_test_split
-    >>> from sklearn.metrics import accuracy_score
-    >>> from my_transformers import CenterChoice
-
-    >>> iris = load_iris()
-    >>> X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target,
-    ...                                                     random_state=0)
-    >>> # Using mean centering
-    >>> pipe = Pipeline([('center', CenterChoice(center_method='mean')),
-    ...                  ('clf', LogisticRegression(random_state=0))])
-    >>> pipe.fit(X_train, y_train)
-    >>> y_pred = pipe.predict(X_test)
-    >>> accuracy_score(y_test, y_pred)
-    0.9736842105263158
-
-    >>> # Using median centering
-    >>> pipe = Pipeline([('center', CenterChoice(center_method='median')),
-    ...                  ('clf', LogisticRegression(random_state=0))])
-    >>> pipe.fit(X_train, y_train)
-    >>> y_pred = pipe.predict(X_test)
-    >>> accuracy_score(y_test, y_pred)
-    Some_accuracy_value
     """
 
     def __init__(self, center_method="mean"):
@@ -140,8 +111,7 @@ class Centering(BaseEstimator, TransformerMixin):
             The method to use for centering. Can be 'mean' or 'median'.
         """
         if center_method not in ["mean", "median"]:
-            raise ValueError(
-                "Invalid centering method. Use 'mean' or 'median'.")
+            raise ValueError("Invalid centering method. Use 'mean' or 'median'.")
         self.center_method = center_method
 
     def fit(self, X, y=None):
