@@ -69,20 +69,19 @@ class PCA(BaseEstimator, TransformerMixin):
         self.t_hotelling_predicted_ = None
 
     def fit(self, X, y=None):
-        """
-        Fit the PCA model to the input data.
-
+        """ Fit the PCA model to the input data.
 
         Parameters
         ----------
-        X : array-like or pd.DataFrame, shape (n_samples, n_features). 
-        Missing values are not allowed.
-        y : None, it is only present for compatibility with sklearn
+        X : array-like or pd.DataFrame, shape (n_samples, n_features)
+            Input data.
+        y : array-like, shape (n_samples,), optional
+            To be compatible with sklearn's fit method.
 
         Returns
         -------
-        self: PCA
-        returns an instance of self.
+        self : PCA
+            Fitted PCA model.
         """
         X = check_array(X, accept_sparse=False, ensure_min_samples=5,
                         ensure_min_features=self.n_components)
@@ -135,18 +134,26 @@ class PCA(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
-        """ Project the input data onto the principal components.
+        """Project the input data onto the principal components.
 
         Parameters
         ----------
         X : array-like or pd.DataFrame, shape (n_samples, n_features)
             Input data.
-        y : None, it is only present for compatibility with sklearn
+        y : optional
+            to be compatible with sklearn's transform method.
 
         Returns
         -------
         scores : array, shape (n_samples, n_components)
             Projected data onto the principal components.
+
+        Raises
+        ------
+        ValueError
+            If the model has not been fitted yet.
+        ValueError
+            If the input data has less than 5 samples.
         """
         X = check_array(X, accept_sparse=False, ensure_min_samples=5)
         check_consistent_length(X)
@@ -166,18 +173,26 @@ class PCA(BaseEstimator, TransformerMixin):
         return scores
 
     def predict(self, X, y=None):
-        """
-        Predict Q residuals and Hotelling's T-squared for new samples.
+        """Predict the Q residuals and Hotelling's T-squared for new samples.
 
-        Parameters:
-        - X: array-like or pd.DataFrame, shape (n_samples, n_features)
-          New samples.
+        Parameters
+        ----------
+        X : array-like or pd.DataFrame, shape (n_samples, n_features)
+            Input data.
+        y : None, optional
+            to be compatible with sklearn's predict method.
 
-        Returns:
-        - scores: array, shape (n_samples, n_components)
-          Projected data onto the principal components.
+        Returns
+        -------
+        scores : array, shape (n_samples, n_components)
+            Projected data onto the principal components.
+
+        Raises
+        ------
+        ValueError
+            If the model has not been fitted yet.
         """
-        X = check_array(X, accept_sparse=False, ensure_min_samples=5)
+        X = check_array(X, accept_sparse=False)
         check_consistent_length(X)
         if self.loadings_ is None:
             raise ValueError(
