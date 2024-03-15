@@ -76,7 +76,20 @@ class ConvolutionSmoothing(BaseEstimator, TransformerMixin):
         return x_convoluted
 
     def fit(self, X, y=None):
-        """Fit the estimator to the data. Does nothing in this case."""
+        """Fit the estimator to the data. Does nothing in this case.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, n_features)
+            The input data.
+        y : None
+            The target values (ignored).
+
+        Returns
+        -------
+        _type_
+            _description_
+        """
         X = check_array(X, accept_sparse=False, ensure_2d=True)
         self.n_features_in_ = X.shape[1]
         return self
@@ -104,9 +117,9 @@ class ConvolutionSmoothing(BaseEstimator, TransformerMixin):
         )
 
 
-class SavGol(BaseEstimator, TransformerMixin):
+class SavitzkyGolay(BaseEstimator, TransformerMixin):
     """
-    A scikit-learn compatible transformer to apply Savitzky-Golay filtering to the input data.
+    Transformer to apply Savitzky-Golay filtering to the input data.
 
     Parameters
     ----------
@@ -179,7 +192,6 @@ class SavGol(BaseEstimator, TransformerMixin):
 
 
 class SelectIntervals(BaseEstimator, TransformerMixin):
-
     """
     Select specific intervals from a 2D numpy array and concatenate them along the columns to create a final array.
     Parameters:
@@ -216,13 +228,25 @@ class SelectIntervals(BaseEstimator, TransformerMixin):
         selected_arrays = []
         for interval in self.intervals:
             # select the specific interval and append it to the list
-            selected_arrays.append(X[:, interval[0]: interval[1]])
+            selected_arrays.append(X[:, interval[0] : interval[1]])
         # concatenate the selected arrays along the columns to create final array
         final_array = np.hstack(selected_arrays)
         return final_array
 
 
 class Detrend(BaseEstimator, TransformerMixin):
+    """
+    Transformer to remove the linear trend from the input data.
+    
+    Methods
+    -------
+    fit(X, y=None)
+        Do nothing and return self.
+    
+    transform(X, y=None)
+        Remove the linear trend from the input data X.
+        
+    """
     def fit(self, X, y=None):
         return self
 
