@@ -31,8 +31,4 @@ These techniques are designed to be used individually or in combination to meet 
 - **User-Friendly**: The ChemoPy Chemometric Toolbox is designed with user-friendliness in mind, making it accessible to both experts and newcomers to chemometrics.
 
 ## Installation
-
-To get started with the ChemoPy Chemometric Toolbox, follow the simple installation steps below, including any dependencies or requirements:
-
-```bash
-pip install chemometric-toolbox
+To install the ChemoPy Chemometric Toolbox, clone the repository!
