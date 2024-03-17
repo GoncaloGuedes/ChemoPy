@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chemopy.preprocessing._filtering &mdash; ChemoPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ChemoPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ChemoPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">chemopy.preprocessing._filtering</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for chemopy.preprocessing._filtering</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">savgol_filter</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_is_fitted</span><span class="p">,</span> <span class="n">check_scalar</span>
+
+
+<div class="viewcode-block" id="ConvolutionSmoothing">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.ConvolutionSmoothing">[docs]</a>
+<span class="k">class</span> <span class="nc">ConvolutionSmoothing</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A custom Scikit-learn estimator to perform convolution smoothing on 1D data.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    kernel_size : int</span>
+<span class="sd">        The size of the convolution kernel used for smoothing.</span>
+
+<span class="sd">    keep_dims: bool</span>
+<span class="sd">        If True the output signal will have the same dimensions as X.</span>
+<span class="sd">        If False (default) the output signal will have max(M, N) - min(M, N) + 1</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    kernel_size : int</span>
+<span class="sd">        The size of the convolution kernel used for smoothing.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">    --------</span>
+<span class="sd">    fit(X, y=None):</span>
+<span class="sd">        Fit the estimator to the data. Does nothing in this case.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            The input data.</span>
+
+<span class="sd">        y : array-like or None (default: None)</span>
+<span class="sd">            The target values (ignored).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns the instance itself.</span>
+
+<span class="sd">    transform(X):</span>
+<span class="sd">        Apply convolution smoothing on each sample in the input data.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            The input data to be smoothed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        smoothed_data : array-like, shape (n_samples, n_features - kernel_size + 1)</span>
+<span class="sd">            The smoothed data after applying the convolution operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">keep_dims</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="n">check_scalar</span><span class="p">(</span>
+            <span class="n">kernel_size</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;kernel_size&quot;</span><span class="p">,</span>
+            <span class="n">min_val</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">target_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_dims</span> <span class="o">=</span> <span class="n">keep_dims</span>
+
+    <span class="k">def</span> <span class="nf">_smooth_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">keep_dims</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">)</span> <span class="o">/</span> <span class="n">kernel_size</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_dims</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_convoluted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)</span>
+        <span class="c1"># Concatenate the first and last windows with the original data</span>
+        <span class="n">x_convoluted</span><span class="p">[:</span><span class="n">kernel_size</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="n">kernel_size</span><span class="p">]</span>
+        <span class="n">x_convoluted</span><span class="p">[</span><span class="o">-</span><span class="n">kernel_size</span><span class="p">:]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="n">kernel_size</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">x_convoluted</span>
+
+<div class="viewcode-block" id="ConvolutionSmoothing.fit">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.ConvolutionSmoothing.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the estimator to the data. Does nothing in this case.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            The input data.</span>
+<span class="sd">        y : None</span>
+<span class="sd">            The target values (ignored).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        _type_</span>
+<span class="sd">            _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_features_in_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="ConvolutionSmoothing.transform">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.ConvolutionSmoothing.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply convolution smoothing on each sample in the input data.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            The input data to be smoothed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        smoothed_data : array-like, shape (n_samples, n_features - kernel_size + 1)</span>
+<span class="sd">            The smoothed data after applying the convolution operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_smooth_data</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">arr</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;kernel_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span><span class="p">,</span> <span class="s2">&quot;keep_dims&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_dims</span><span class="p">}</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SavitzkyGolay">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.SavitzkyGolay">[docs]</a>
+<span class="k">class</span> <span class="nc">SavitzkyGolay</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer to apply Savitzky-Golay filtering to the input data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    window_length : int, optional (default=5)</span>
+<span class="sd">        The length of the window used for filtering.</span>
+
+<span class="sd">    polyorder : int, optional (default=2)</span>
+<span class="sd">        The order of the polynomial used for fitting the samples in the window.</span>
+
+<span class="sd">    deriv : int, optional (default=1)</span>
+<span class="sd">        The order of the derivative to compute. Zero corresponds to smoothing.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    fit(X, y=None)</span>
+<span class="sd">        Do nothing and return self.</span>
+
+<span class="sd">    transform(X, y=None)</span>
+<span class="sd">        Apply Savitzky-Golay filtering to the input data X.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deriv</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window_length</span> <span class="o">=</span> <span class="n">window_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polyorder</span> <span class="o">=</span> <span class="n">polyorder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deriv</span> <span class="o">=</span> <span class="n">deriv</span>
+
+<div class="viewcode-block" id="SavitzkyGolay.fit">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.SavitzkyGolay.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Do nothing and return self.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            The input data.</span>
+
+<span class="sd">        y : array-like, shape (n_samples,), optional (default=None)</span>
+<span class="sd">            The target values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : SavGol</span>
+<span class="sd">            The fitted transformer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="SavitzkyGolay.transform">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.SavitzkyGolay.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply Savitzky-Golay filtering to the input data X.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            The input data.</span>
+
+<span class="sd">        y : array-like, shape (n_samples,), optional (default=None)</span>
+<span class="sd">            The target values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_filtered : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            The filtered input data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">savgol_filter</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">window_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">window_length</span><span class="p">,</span>
+            <span class="n">polyorder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polyorder</span><span class="p">,</span>
+            <span class="n">deriv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deriv</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SelectIntervals">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.SelectIntervals">[docs]</a>
+<span class="k">class</span> <span class="nc">SelectIntervals</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Select specific intervals from a 2D numpy array and concatenate them along the columns to create a final array.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    intervals (List[Tuple[int, int]]): List of tuples containing the start and end index of the intervals to select.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    numpy.ndarray: The final array with the selected intervals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervals</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intervals</span> <span class="o">=</span> <span class="n">intervals</span>
+
+<div class="viewcode-block" id="SelectIntervals.fit">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.SelectIntervals.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method does not perform any operation and just returns the fitted estimator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="SelectIntervals.transform">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.SelectIntervals.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Selects specific intervals from a 2D numpy array and concatenates them along the columns to create a final array.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            X (numpy.ndarray): The input 2D numpy array to select intervals from.</span>
+<span class="sd">            y: Ignored.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        numpy.ndarray: The final array with the selected intervals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">intervals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span>
+        <span class="n">selected_arrays</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">intervals</span><span class="p">:</span>
+            <span class="c1"># select the specific interval and append it to the list</span>
+            <span class="n">selected_arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="c1"># concatenate the selected arrays along the columns to create final array</span>
+        <span class="n">final_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">selected_arrays</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">final_array</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Detrend">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.Detrend">[docs]</a>
+<span class="k">class</span> <span class="nc">Detrend</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer to remove the linear trend from the input data.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    fit(X, y=None)</span>
+<span class="sd">        Do nothing and return self.</span>
+
+<span class="sd">    transform(X, y=None)</span>
+<span class="sd">        Remove the linear trend from the input data X.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Detrend.fit">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.Detrend.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="Detrend.transform">
+<a class="viewcode-back" href="../../../chemopy.preprocessing.html#chemopy.preprocessing.Detrend.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">detrend</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gonçalo Guedes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

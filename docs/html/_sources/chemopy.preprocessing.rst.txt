@@ -1,0 +1,10 @@
+chemopy.preprocessing package
+=============================
+
+Algorithms
+---------------
+
+.. automodule:: chemopy.preprocessing
+   :members:
+   :undoc-members:
+   :show-inheritance:

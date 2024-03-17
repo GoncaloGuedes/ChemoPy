@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chemopy.preprocessing package &mdash; ChemoPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to ChemoPy’s Documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ChemoPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Preprocessing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-chemopy.preprocessing">Algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.AbsoluteValues"><code class="docutils literal notranslate"><span class="pre">AbsoluteValues</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.AbsoluteValues.fit"><code class="docutils literal notranslate"><span class="pre">AbsoluteValues.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.AbsoluteValues.transform"><code class="docutils literal notranslate"><span class="pre">AbsoluteValues.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.Centering"><code class="docutils literal notranslate"><span class="pre">Centering</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.Centering.center_method_"><code class="docutils literal notranslate"><span class="pre">Centering.center_method_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.Centering.center_value_"><code class="docutils literal notranslate"><span class="pre">Centering.center_value_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.Centering.fit"><code class="docutils literal notranslate"><span class="pre">Centering.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.Centering.transform"><code class="docutils literal notranslate"><span class="pre">Centering.transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">Centering.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">Centering.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.ConvolutionSmoothing"><code class="docutils literal notranslate"><span class="pre">ConvolutionSmoothing</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.ConvolutionSmoothing.fit"><code class="docutils literal notranslate"><span class="pre">ConvolutionSmoothing.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.ConvolutionSmoothing.transform"><code class="docutils literal notranslate"><span class="pre">ConvolutionSmoothing.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.Detrend"><code class="docutils literal notranslate"><span class="pre">Detrend</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.Detrend.fit"><code class="docutils literal notranslate"><span class="pre">Detrend.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.Detrend.transform"><code class="docutils literal notranslate"><span class="pre">Detrend.transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">Detrend.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">Detrend.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.MSC"><code class="docutils literal notranslate"><span class="pre">MSC</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.MSC.fit"><code class="docutils literal notranslate"><span class="pre">MSC.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.MSC.transform"><code class="docutils literal notranslate"><span class="pre">MSC.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.SNV"><code class="docutils literal notranslate"><span class="pre">SNV</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.SNV.fit"><code class="docutils literal notranslate"><span class="pre">SNV.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.SNV.transform"><code class="docutils literal notranslate"><span class="pre">SNV.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.SavitzkyGolay"><code class="docutils literal notranslate"><span class="pre">SavitzkyGolay</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.SavitzkyGolay.fit"><code class="docutils literal notranslate"><span class="pre">SavitzkyGolay.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.SavitzkyGolay.transform"><code class="docutils literal notranslate"><span class="pre">SavitzkyGolay.transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">SavitzkyGolay.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">SavitzkyGolay.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.ScaleMaxMin"><code class="docutils literal notranslate"><span class="pre">ScaleMaxMin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.ScaleMaxMin.fit"><code class="docutils literal notranslate"><span class="pre">ScaleMaxMin.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.ScaleMaxMin.transform"><code class="docutils literal notranslate"><span class="pre">ScaleMaxMin.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.SelectIntervals"><code class="docutils literal notranslate"><span class="pre">SelectIntervals</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.SelectIntervals.fit"><code class="docutils literal notranslate"><span class="pre">SelectIntervals.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.SelectIntervals.transform"><code class="docutils literal notranslate"><span class="pre">SelectIntervals.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.preprocessing.TransmittanceToAbsorbance"><code class="docutils literal notranslate"><span class="pre">TransmittanceToAbsorbance</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.TransmittanceToAbsorbance.fit"><code class="docutils literal notranslate"><span class="pre">TransmittanceToAbsorbance.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chemopy.preprocessing.TransmittanceToAbsorbance.transform"><code class="docutils literal notranslate"><span class="pre">TransmittanceToAbsorbance.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ChemoPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">chemopy.preprocessing package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chemopy.preprocessing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chemopy-preprocessing-package">
+<h1>chemopy.preprocessing package<a class="headerlink" href="#chemopy-preprocessing-package" title="Link to this heading"></a></h1>
+<section id="module-chemopy.preprocessing">
+<span id="algorithms"></span><h2>Algorithms<a class="headerlink" href="#module-chemopy.preprocessing" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.AbsoluteValues">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">AbsoluteValues</span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_transformations.html#AbsoluteValues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.AbsoluteValues" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Transformer to convert all negative values in positive</p>
+<p>Parameters:
+None</p>
+<p>Attributes:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.AbsoluteValues.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_transformations.html#AbsoluteValues.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.AbsoluteValues.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the transformer.</p>
+<p>Parameters:
+X (array-like of shape (n_samples, n_features)): Input transmittance values.</p>
+<p>Returns:
+self (object): The fitted transformer object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.AbsoluteValues.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_transformations.html#AbsoluteValues.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.AbsoluteValues.transform" title="Link to this definition"></a></dt>
+<dd><p>Transform the negative values into positive.</p>
+<p>Parameters:
+X (array-like of shape (n_samples, n_features)): Input values.</p>
+<p>Returns:
+transformed_X (ndarray of shape (n_samples, n_features)): Transformed values.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Centering">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">Centering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#Centering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.Centering" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>A scikit-learn compatible transformer to center the data by subtracting the mean or median.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>center_method</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default='mean'</em><em>)</em>) – The method to use for centering. Can be ‘mean, ‘median’ or ‘passthrough’.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Centering.center_method_">
+<span class="sig-name descname"><span class="pre">center_method_</span></span><a class="headerlink" href="#chemopy.preprocessing.Centering.center_method_" title="Link to this definition"></a></dt>
+<dd><p>The method used for centering. Either ‘mean’ or ‘median’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Centering.center_value_">
+<span class="sig-name descname"><span class="pre">center_value_</span></span><a class="headerlink" href="#chemopy.preprocessing.Centering.center_value_" title="Link to this definition"></a></dt>
+<dd><p>The center (mean or median) of each feature in the input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like, shape (n_features,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Centering.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#Centering.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.Centering.fit" title="Link to this definition"></a></dt>
+<dd><p>Compute the center (mean or median) of each feature in the input data X.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Centering.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#Centering.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.Centering.transform" title="Link to this definition"></a></dt>
+<dd><p>Center the input data X by subtracting the center (mean or median) of each feature.</p>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>The input data X can be a numpy array or a pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>center_method</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default='mean'</em><em>)</em>) – The method to use for centering. Can be ‘mean’ or ‘median’.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#Centering.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Compute the center (mean or median) of each feature in the input data X.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input data.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The fitted transformer.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CenterChoice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#Centering.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Center the input data X by subtracting the center (mean or median) of each feature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_centered</strong> – The centered input data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like, shape (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.ConvolutionSmoothing">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">ConvolutionSmoothing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#ConvolutionSmoothing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.ConvolutionSmoothing" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>A custom Scikit-learn estimator to perform convolution smoothing on 1D data.</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>kernel_size<span class="classifier">int</span></dt><dd><p>The size of the convolution kernel used for smoothing.</p>
+</dd>
+<dt>keep_dims: bool</dt><dd><p>If True the output signal will have the same dimensions as X.
+If False (default) the output signal will have max(M, N) - min(M, N) + 1</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h3>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>kernel_size<span class="classifier">int</span></dt><dd><p>The size of the convolution kernel used for smoothing.</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h3>Methods:<a class="headerlink" href="#methods" title="Link to this heading"></a></h3>
+<dl>
+<dt>fit(X, y=None):</dt><dd><p>Fit the estimator to the data. Does nothing in this case.</p>
+<dl class="simple">
+<dt>X<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The input data.</p>
+</dd>
+<dt>y<span class="classifier">array-like or None (default: None)</span></dt><dd><p>The target values (ignored).</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Returns the instance itself.</p>
+</dd>
+</dl>
+</dd>
+<dt>transform(X):</dt><dd><p>Apply convolution smoothing on each sample in the input data.</p>
+<dl class="simple">
+<dt>X<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The input data to be smoothed.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>smoothed_data<span class="classifier">array-like, shape (n_samples, n_features - kernel_size + 1)</span></dt><dd><p>The smoothed data after applying the convolution operation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.ConvolutionSmoothing.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#ConvolutionSmoothing.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.ConvolutionSmoothing.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the estimator to the data. Does nothing in this case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input data.</p></li>
+<li><p><strong>y</strong> (<em>None</em>) – The target values (ignored).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.ConvolutionSmoothing.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#ConvolutionSmoothing.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.ConvolutionSmoothing.transform" title="Link to this definition"></a></dt>
+<dd><p>Apply convolution smoothing on each sample in the input data.</p>
+<section id="id2">
+<h4>Parameters:<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The input data to be smoothed.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>smoothed_data<span class="classifier">array-like, shape (n_samples, n_features - kernel_size + 1)</span></dt><dd><p>The smoothed data after applying the convolution operation.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Detrend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">Detrend</span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#Detrend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.Detrend" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Transformer to remove the linear trend from the input data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Detrend.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#Detrend.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.Detrend.fit" title="Link to this definition"></a></dt>
+<dd><p>Do nothing and return self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.Detrend.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#Detrend.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.Detrend.transform" title="Link to this definition"></a></dt>
+<dd><p>Remove the linear trend from the input data X.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#Detrend.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#Detrend.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.MSC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">MSC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trainable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scattering.html#MSC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.MSC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.MSC.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#chemopy.preprocessing.MSC" title="chemopy.preprocessing._scattering.MSC"><span class="pre">MSC</span></a></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_scattering.html#MSC.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.MSC.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the MSC transformer to the training data.</p>
+<p>Parameters:
+X (np.ndarray): Input data of shape (n_samples, n_features).
+y (np.ndarray): Target values (unused).</p>
+<p>Returns:
+self (MSC): The fitted MSC transformer object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.MSC.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_scattering.html#MSC.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.MSC.transform" title="Link to this definition"></a></dt>
+<dd><p>Transform the data using MSC correction.</p>
+<p>Parameters:
+X (np.ndarray): Input data to be transformed of shape (n_samples, n_features).
+y (np.ndarray): Target values (unused).</p>
+<p>Returns:
+X_msc (np.ndarray): The transformed data after MSC correction.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SNV">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">SNV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scattering.html#SNV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SNV" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Standard Normal Variate (SNV) method performs a normalization of the spectra that consists
+in subtracting each spectrum by its own mean and dividing it by its own standard deviation.
+After SNV, each spectrum will have a mean of 0 and a standard deviation of 1.</p>
+<p>Parameters:
+None</p>
+<p>Attributes:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SNV.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_scattering.html#SNV.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SNV.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the SNV transformer to the training data.</p>
+<p>Parameters:
+X (np.ndarray): Input data of shape (n_samples, n_features).
+y (np.ndarray): Target values (unused).</p>
+<p>Returns:
+self (SNV): The fitted SNV transformer object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SNV.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_scattering.html#SNV.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SNV.transform" title="Link to this definition"></a></dt>
+<dd><p>Apply the Standard Normal Variate (SNV) transformation to the input data.</p>
+<p>Parameters:
+X (np.ndarray): Input data of shape (n_samples, n_features).
+y (np.ndarray): Target values (unused).</p>
+<p>Returns:
+X_snv (np.ndarray): Transformed data of shape (n_samples, n_features).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SavitzkyGolay">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">SavitzkyGolay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SavitzkyGolay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SavitzkyGolay" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Transformer to apply Savitzky-Golay filtering to the input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window_length</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=5</em><em>)</em>) – The length of the window used for filtering.</p></li>
+<li><p><strong>polyorder</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=2</em><em>)</em>) – The order of the polynomial used for fitting the samples in the window.</p></li>
+<li><p><strong>deriv</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=1</em><em>)</em>) – The order of the derivative to compute. Zero corresponds to smoothing.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SavitzkyGolay.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SavitzkyGolay.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SavitzkyGolay.fit" title="Link to this definition"></a></dt>
+<dd><p>Do nothing and return self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SavitzkyGolay.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SavitzkyGolay.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SavitzkyGolay.transform" title="Link to this definition"></a></dt>
+<dd><p>Apply Savitzky-Golay filtering to the input data X.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SavitzkyGolay.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Do nothing and return self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input data.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The fitted transformer.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SavGol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SavitzkyGolay.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Apply Savitzky-Golay filtering to the input data X.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input data.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The target values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_filtered</strong> – The filtered input data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like, shape (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.ScaleMaxMin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">ScaleMaxMin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#ScaleMaxMin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.ScaleMaxMin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Transform spectra by scaling each features to a given range.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.ScaleMaxMin.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#ScaleMaxMin.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.ScaleMaxMin.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the ScaleMaxMin transformer to the training data.</p>
+<p>Parameters:
+X (np.ndarray): Input data of shape (n_samples, n_features).
+y (np.ndarray): Target values (unused).</p>
+<p>Returns:
+self (SNV): The fitted SNV transformer object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.ScaleMaxMin.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_scaling_centering.html#ScaleMaxMin.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.ScaleMaxMin.transform" title="Link to this definition"></a></dt>
+<dd><p>Apply the ScaleMaxMin transformation to the input data.</p>
+<p>Parameters:
+X (np.ndarray): Input data of shape (n_samples, n_features).
+y (np.ndarray): Target values (unused).</p>
+<p>Returns:
+X_snv (np.ndarray): Transformed data of shape (n_samples, n_features).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SelectIntervals">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">SelectIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intervals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SelectIntervals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SelectIntervals" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Select specific intervals from a 2D numpy array and concatenate them along the columns to create a final array.
+Parameters:
+intervals (List[Tuple[int, int]]): List of tuples containing the start and end index of the intervals to select.</p>
+<p>Returns:
+numpy.ndarray: The final array with the selected intervals.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SelectIntervals.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SelectIntervals.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SelectIntervals.fit" title="Link to this definition"></a></dt>
+<dd><p>This method does not perform any operation and just returns the fitted estimator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.SelectIntervals.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_filtering.html#SelectIntervals.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.SelectIntervals.transform" title="Link to this definition"></a></dt>
+<dd><p>Selects specific intervals from a 2D numpy array and concatenates them along the columns to create a final array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – The input 2D numpy array to select intervals from.</p></li>
+<li><p><strong>y</strong> – Ignored.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns:
+numpy.ndarray: The final array with the selected intervals.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.preprocessing.TransmittanceToAbsorbance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.preprocessing.</span></span><span class="sig-name descname"><span class="pre">TransmittanceToAbsorbance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percentage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_transformations.html#TransmittanceToAbsorbance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.TransmittanceToAbsorbance" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Transformer to convert transmittance values to absorbance values using the formula:
+absorbance = log10(1 / transmittance)</p>
+<p>Parameters:
+percentage: bool = True is you have the %T</p>
+<p>Attributes:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.TransmittanceToAbsorbance.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/preprocessing/_transformations.html#TransmittanceToAbsorbance.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.TransmittanceToAbsorbance.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the transformer.</p>
+<p>Parameters:
+X (array-like of shape (n_samples, n_features)): Input transmittance values.</p>
+<p>Returns:
+self (object): The fitted transformer object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.preprocessing.TransmittanceToAbsorbance.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/chemopy/preprocessing/_transformations.html#TransmittanceToAbsorbance.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.preprocessing.TransmittanceToAbsorbance.transform" title="Link to this definition"></a></dt>
+<dd><p>Transform the transmittance values to absorbance values.</p>
+<p>Parameters:
+X (array-like of shape (n_samples, n_features)): Input transmittance values.</p>
+<p>Returns:
+transformed_X (ndarray of shape (n_samples, n_features)): Transformed absorbance values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ChemoPy’s Documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gonçalo Guedes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

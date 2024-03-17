@@ -1,0 +1,29 @@
+chemopy.dataloader.tests package
+================================
+
+Submodules
+----------
+
+chemopy.dataloader.tests.test\_perkin\_elmer module
+---------------------------------------------------
+
+.. automodule:: chemopy.dataloader.tests.test_perkin_elmer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+chemopy.dataloader.tests.test\_texas\_instruments module
+--------------------------------------------------------
+
+.. automodule:: chemopy.dataloader.tests.test_texas_instruments
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: chemopy.dataloader.tests
+   :members:
+   :undoc-members:
+   :show-inheritance:

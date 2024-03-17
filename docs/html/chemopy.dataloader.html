@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chemopy.dataloader package &mdash; ChemoPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="chemopy.preprocessing package" href="chemopy.preprocessing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ChemoPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chemopy.preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dataloader</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-chemopy.dataloader">Sensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.dataloader.load_perkin_elmer_data"><code class="docutils literal notranslate"><span class="pre">load_perkin_elmer_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chemopy.dataloader.load_texas_instruments_data"><code class="docutils literal notranslate"><span class="pre">load_texas_instruments_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="chemopy.preprocessing.html">chemopy.preprocessing package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ChemoPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">chemopy.dataloader package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chemopy.dataloader.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chemopy-dataloader-package">
+<h1>chemopy.dataloader package<a class="headerlink" href="#chemopy-dataloader-package" title="Link to this heading"></a></h1>
+<p>This package contains modules for loading data from various sources.</p>
+<section id="module-chemopy.dataloader">
+<span id="sensors"></span><h2>Sensors<a class="headerlink" href="#module-chemopy.dataloader" title="Link to this heading"></a></h2>
+<p>Data loader module for chemopy.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="chemopy.dataloader.load_perkin_elmer_data">
+<span class="sig-prename descclassname"><span class="pre">chemopy.dataloader.</span></span><span class="sig-name descname"><span class="pre">load_perkin_elmer_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excel_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/chemopy/dataloader/_perkin_elmer.html#load_perkin_elmer_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.dataloader.load_perkin_elmer_data" title="Link to this definition"></a></dt>
+<dd><p>Load data from Perkin Elmer CSV files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pathname</strong> (<em>str</em>) – Path to the folder containing the CSV files.
+Note: The CSV files must be all from perkin elmer.</p></li>
+<li><p><strong>excel_name</strong> (<em>str</em><em>, </em><em>optional</em>) – If given, the data will be saved as an excel file with the given name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe containing the data from the CSV files. The first column is the name of the file.
+The other columns are the data from the CSV files.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="chemopy.dataloader.load_texas_instruments_data">
+<span class="sig-prename descclassname"><span class="pre">chemopy.dataloader.</span></span><span class="sig-name descname"><span class="pre">load_texas_instruments_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excel_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factory_reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/chemopy/dataloader/_texas_instruments.html#load_texas_instruments_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.dataloader.load_texas_instruments_data" title="Link to this definition"></a></dt>
+<dd><p>Import data from Texas Instruments CSV files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pathname</strong> (<em>str</em>) – Path to the folder containing the CSV files.
+Note: The CSV files must be all from Texas Instruments.</p></li>
+<li><p><strong>excel_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – If given, the data will be saved as an excel file with the given name,
+default is None.</p></li>
+<li><p><strong>factory_reference</strong> (<em>Optional</em><em>[</em><em>list</em><em>]</em><em>, </em><em>optional</em>) – if given, the data will be converted to absorbance using the given reference,
+default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe containing the data from the CSV files. The first column is the name of the file.
+The other columns are the data from the CSV files.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chemopy.preprocessing.html">chemopy.preprocessing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chemopy.preprocessing.html#module-chemopy.preprocessing">Algorithms</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chemopy.preprocessing.html" class="btn btn-neutral float-left" title="chemopy.preprocessing package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gonçalo Guedes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

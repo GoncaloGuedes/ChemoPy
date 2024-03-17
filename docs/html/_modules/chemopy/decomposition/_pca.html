@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chemopy.decomposition._pca &mdash; ChemoPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ChemoPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ChemoPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">chemopy.decomposition._pca</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for chemopy.decomposition._pca</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Principal Component Analysis (PCA) Transformer. &quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">check_array</span><span class="p">,</span>
+    <span class="n">check_consistent_length</span><span class="p">,</span>
+    <span class="n">check_is_fitted</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="PCA">
+<a class="viewcode-back" href="../../../chemopy.decomposition.html#chemopy.decomposition.PCA">[docs]</a>
+<span class="k">class</span> <span class="nc">PCA</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Principal Component Analysis (PCA) Transformer.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - n_components: int, optional (default=2)</span>
+<span class="sd">      Number of components to keep.</span>
+<span class="sd">    - mean_center: bool, optional (default=False)</span>
+<span class="sd">      Whether to center the data by subtracting the mean.</span>
+<span class="sd">    - confidence_level: float, optional (default=0.95)</span>
+<span class="sd">      Confidence level for calculating Q residuals and Hotelling&#39;s T-squared.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    - explained_variance_: array, shape (n_components,)</span>
+<span class="sd">      Percentage of variance explained by each of the selected components.</span>
+<span class="sd">    - explained_variance_accumulative: array, shape (n_components,)</span>
+<span class="sd">      Cumulative explained variance.</span>
+<span class="sd">    - loadings_: array, shape (n_features, n_components)</span>
+<span class="sd">      Principal axes in feature space, representing the directions of maximum variance.</span>
+<span class="sd">    - mean_: array, shape (n_features,)</span>
+<span class="sd">      Mean of the input data if mean_center is True.</span>
+<span class="sd">    - q_limit_: float</span>
+<span class="sd">      Q limit for Q residuals at the specified confidence level.</span>
+<span class="sd">    - q_residuals_: array, shape (n_samples,)</span>
+<span class="sd">      Q residuals for the fitted data.</span>
+<span class="sd">    - q_residuals_predicted_: array, shape (n_samples,)</span>
+<span class="sd">      Predicted Q residuals for new samples.</span>
+<span class="sd">    - t_hotelling_: array, shape (n_samples,)</span>
+<span class="sd">      Hotelling&#39;s T-squared values for the fitted data.</span>
+<span class="sd">    - t_hotelling_predicted_: array, shape (n_samples,)</span>
+<span class="sd">      Predicted Hotelling&#39;s T-squared values for new samples.</span>
+<span class="sd">    - t_limit_: float</span>
+<span class="sd">      T-squared limit at the specified confidence level.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">mean_center</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">confidence_level</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="n">n_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_center</span> <span class="o">=</span> <span class="n">mean_center</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">confidence_level</span> <span class="o">=</span> <span class="n">confidence_level</span>
+
+        <span class="c1"># Define the variables that will be calculated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__covariance_matrix</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_accumulative</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_residuals_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_limit_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_hotelling_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_limit_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sigma</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_residuals_predicted_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_hotelling_predicted_</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="PCA.fit">
+<a class="viewcode-back" href="../../../chemopy.decomposition.html#chemopy.decomposition.PCA.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the PCA model to the input data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like or pd.DataFrame, shape (n_samples, n_features)</span>
+<span class="sd">            Input data.</span>
+<span class="sd">        y : array-like, shape (n_samples,), optional</span>
+<span class="sd">            To be compatible with sklearn&#39;s fit method.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : PCA</span>
+<span class="sd">            Fitted PCA model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ensure_min_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">ensure_min_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_center</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span>
+
+        <span class="c1"># number of samples</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># calculate the SVD of the data</span>
+        <span class="n">singular_vectors</span><span class="p">,</span> <span class="n">singular_values</span><span class="p">,</span> <span class="n">v_transpose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="c1"># keep only the top n_components</span>
+        <span class="n">singular_vectors</span> <span class="o">=</span> <span class="n">singular_vectors</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">]</span>
+        <span class="n">singular_values</span> <span class="o">=</span> <span class="n">singular_values</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">]</span>
+        <span class="n">v_transpose</span> <span class="o">=</span> <span class="n">v_transpose</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">]</span>
+
+        <span class="c1"># project the data onto the principal components</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">v_transpose</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="c1"># calculate the explained variance</span>
+        <span class="n">explained_variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__explained_variance</span><span class="p">(</span><span class="n">singular_values</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+
+        <span class="c1"># calculate q residuals</span>
+        <span class="n">q_residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__q_residuals</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">v_transpose</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="c1"># calculate q limit</span>
+        <span class="n">q_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__confidence_interval</span><span class="p">(</span><span class="n">q_residuals</span><span class="p">)</span>
+
+        <span class="c1"># calculate hotelling t^2</span>
+        <span class="n">t_hotelling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hotelling_t2</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">singular_values</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1"># calculate t^2 limit</span>
+        <span class="n">t_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__confidence_interval</span><span class="p">(</span><span class="n">t_hotelling</span><span class="p">)</span>
+
+        <span class="c1"># Save Variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span> <span class="o">=</span> <span class="n">v_transpose</span><span class="o">.</span><span class="n">T</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_</span> <span class="o">=</span> <span class="n">explained_variance</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_accumulative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_residuals_</span> <span class="o">=</span> <span class="n">q_residuals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_limit_</span> <span class="o">=</span> <span class="n">q_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_hotelling_</span> <span class="o">=</span> <span class="n">t_hotelling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_limit_</span> <span class="o">=</span> <span class="n">t_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__covariance_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">singular_values</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="PCA.transform">
+<a class="viewcode-back" href="../../../chemopy.decomposition.html#chemopy.decomposition.PCA.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Project the input data onto the principal components.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like or pd.DataFrame, shape (n_samples, n_features)</span>
+<span class="sd">            Input data.</span>
+<span class="sd">        y : optional</span>
+<span class="sd">            to be compatible with sklearn&#39;s transform method.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scores : array, shape (n_samples, n_components)</span>
+<span class="sd">            Projected data onto the principal components.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the model has not been fitted yet.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the input data has less than 5 samples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ensure_min_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">check_consistent_length</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;loadings_&quot;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The model has not been fitted yet. Please call fit() first.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_center</span><span class="p">:</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span>
+        <span class="c1"># Project the new sample onto the principal components</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The model has not been fitted yet. Please call fit() first.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scores</span></div>
+
+
+<div class="viewcode-block" id="PCA.predict">
+<a class="viewcode-back" href="../../../chemopy.decomposition.html#chemopy.decomposition.PCA.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict the Q residuals and Hotelling&#39;s T-squared for new samples.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like or pd.DataFrame, shape (n_samples, n_features)</span>
+<span class="sd">            Input data.</span>
+<span class="sd">        y : None, optional</span>
+<span class="sd">            to be compatible with sklearn&#39;s predict method.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scores : array, shape (n_samples, n_components)</span>
+<span class="sd">            Projected data onto the principal components.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the model has not been fitted yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">check_consistent_length</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The model has not been fitted yet. Please call fit() first.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;loadings_&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_center</span><span class="p">:</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span>
+
+        <span class="c1"># Project the new sample onto the principal components</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The model has not been fitted yet. Please call fit() first.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Project the new sample onto the principal components</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the Q residuals for the new sample</span>
+        <span class="n">q_residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__q_residuals</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadings_</span><span class="p">)</span>
+
+        <span class="c1"># Calculate Hotelling&#39;s T-squared for the new sample</span>
+        <span class="n">t_hotelling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hotelling_t2</span><span class="p">(</span>
+            <span class="n">scores</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__covariance_matrix</span>
+        <span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># Save Variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_residuals_predicted_</span> <span class="o">=</span> <span class="n">q_residuals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_hotelling_predicted_</span> <span class="o">=</span> <span class="n">t_hotelling</span>
+        <span class="k">return</span> <span class="n">scores</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__explained_variance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">singular_values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+        <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the explained variance ratio.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        singular_values : array-like, shape (n_components,)</span>
+<span class="sd">            Singular values corresponding to the principal components.</span>
+<span class="sd">        n_samples : int</span>
+<span class="sd">            Number of samples in the dataset.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        array-like, shape (n_components,)</span>
+<span class="sd">            Explained variance ratio for each principal component.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eig_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">singular_values</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_samples</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">explained_variance</span> <span class="o">=</span> <span class="n">eig_val</span> <span class="o">/</span> <span class="n">eig_val</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">explained_variance</span>
+
+    <span class="k">def</span> <span class="nf">__q_residuals</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">scores</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">loadings</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the Q residuals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : numpy.ndarray</span>
+<span class="sd">            The input data matrix.</span>
+<span class="sd">        scores : numpy.ndarray</span>
+<span class="sd">            The scores obtained from PCA.</span>
+<span class="sd">        loadings : numpy.ndarray</span>
+<span class="sd">            The loadings obtained from PCA.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The Q residuals.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The Q residuals are a measure of the difference between the original data matrix X</span>
+<span class="sd">        and the reconstructed data matrix obtained by multiplying the scores and loadings matrices.</span>
+
+<span class="sd">        The Q residuals are calculated as the sum of squared differences between each row of X</span>
+<span class="sd">        and its corresponding reconstructed row.</span>
+
+<span class="sd">        The Q residuals can be used to assess the quality of the PCA model and identify outliers</span>
+<span class="sd">        in the data.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">q_residuals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">q</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">q_residuals</span>
+
+    <span class="k">def</span> <span class="nf">__hotelling_t2</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">scores_matrix</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+        <span class="n">covariance_matrix</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the Hotelling&#39;s T^2 statistic.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scores_matrix : numpy.ndarray</span>
+<span class="sd">            The matrix of scores obtained from PCA.</span>
+<span class="sd">        covariance_matrix : numpy.ndarray</span>
+<span class="sd">            The covariance matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The Hotelling&#39;s T^2 statistic for each sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">intermediate_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">scores_matrix</span><span class="p">,</span> <span class="n">covariance_matrix</span><span class="p">)</span>
+        <span class="n">hotelling_t2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">intermediate_product</span><span class="p">,</span> <span class="n">scores_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">hotelling_t2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">hotelling_t2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hotelling_t2</span>
+
+    <span class="k">def</span> <span class="nf">__confidence_interval</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the confidence interval for the population.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        population : Union[np.ndarray, List[float]]</span>
+<span class="sd">            The population. It can be either Q residuals or Hotelling&#39;s T^2.</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The confidence interval.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Assuming population follow a normal distribution</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">population</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the confidence interval</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence_level</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">std</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">interval</span>  <span class="c1"># type: ignore</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gonçalo Guedes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

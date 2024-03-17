@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chemopy.orthogonal_corrections package &mdash; ChemoPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ChemoPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">chemopy.orthogonal_corrections package</a><ul>
+<li><a class="reference internal" href="#module-chemopy.orthogonal_corrections">Module contents</a><ul>
+<li><a class="reference internal" href="#chemopy.orthogonal_corrections.OrthogonalProjection"><code class="docutils literal notranslate"><span class="pre">OrthogonalProjection</span></code></a><ul>
+<li><a class="reference internal" href="#chemopy.orthogonal_corrections.OrthogonalProjection.fit"><code class="docutils literal notranslate"><span class="pre">OrthogonalProjection.fit()</span></code></a></li>
+<li><a class="reference internal" href="#chemopy.orthogonal_corrections.OrthogonalProjection.transform"><code class="docutils literal notranslate"><span class="pre">OrthogonalProjection.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ChemoPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">chemopy.orthogonal_corrections package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chemopy.orthogonal_corrections.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chemopy-orthogonal-corrections-package">
+<h1>chemopy.orthogonal_corrections package<a class="headerlink" href="#chemopy-orthogonal-corrections-package" title="Link to this heading"></a></h1>
+<section id="module-chemopy.orthogonal_corrections">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-chemopy.orthogonal_corrections" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.orthogonal_corrections.OrthogonalProjection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.orthogonal_corrections.</span></span><span class="sig-name descname"><span class="pre">OrthogonalProjection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/orthogonal_corrections/_projections.html#OrthogonalProjection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.orthogonal_corrections.OrthogonalProjection" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Orthogonal Projection Transformer.</p>
+<p>This class implements a transformer that performs orthogonal projection on input data.</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>P<span class="classifier">array-like, shape (n_features, n_features)</span></dt><dd><p>The orthogonal matrix used for projection. It should be symmetric and orthogonal,
+i.e., P &#64; P.T = P.T &#64; P = I, where I is the identity matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h3>Methods:<a class="headerlink" href="#methods" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>fit(X)</dt><dd><p>Fits the transformer to the data. This method does nothing and only exists to comply
+with the scikit-learn TransformerMixin interface.</p>
+</dd>
+<dt>transform(X)</dt><dd><p>Applies the orthogonal projection to the input data X.</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h3>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>P<span class="classifier">array-like, shape (n_features, n_features)</span></dt><dd><p>The orthogonal matrix used for projection.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.orthogonal_corrections.OrthogonalProjection.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/orthogonal_corrections/_projections.html#OrthogonalProjection.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.orthogonal_corrections.OrthogonalProjection.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the transformer to the data.</p>
+<p>This method does nothing and only exists to comply with the scikit-learn TransformerMixin interface.</p>
+<section id="id1">
+<h4>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Input data (not used in this transformer).</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">OrthogonalProjection</span></dt><dd><p>The fitted transformer instance.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.orthogonal_corrections.OrthogonalProjection.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/orthogonal_corrections/_projections.html#OrthogonalProjection.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.orthogonal_corrections.OrthogonalProjection.transform" title="Link to this definition"></a></dt>
+<dd><p>Apply orthogonal projection to the input data.</p>
+<section id="id2">
+<h4>Parameters:<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Input data to be transformed.</p>
+</dd>
+<dt>y<span class="classifier">array-like, shape (n_samples,), optional (default=None)</span></dt><dd><p>Target data (not used in this transformer).</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h4>Returns:<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_proj<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Transformed data after orthogonal projection.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gonçalo Guedes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

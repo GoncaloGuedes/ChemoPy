@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chemopy.decomposition package &mdash; ChemoPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ChemoPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">chemopy.decomposition package</a><ul>
+<li><a class="reference internal" href="#module-chemopy.decomposition">Module contents</a><ul>
+<li><a class="reference internal" href="#chemopy.decomposition.PCA"><code class="docutils literal notranslate"><span class="pre">PCA</span></code></a><ul>
+<li><a class="reference internal" href="#chemopy.decomposition.PCA.fit"><code class="docutils literal notranslate"><span class="pre">PCA.fit()</span></code></a></li>
+<li><a class="reference internal" href="#chemopy.decomposition.PCA.predict"><code class="docutils literal notranslate"><span class="pre">PCA.predict()</span></code></a></li>
+<li><a class="reference internal" href="#chemopy.decomposition.PCA.transform"><code class="docutils literal notranslate"><span class="pre">PCA.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ChemoPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">chemopy.decomposition package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chemopy.decomposition.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chemopy-decomposition-package">
+<h1>chemopy.decomposition package<a class="headerlink" href="#chemopy-decomposition-package" title="Link to this heading"></a></h1>
+<section id="module-chemopy.decomposition">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-chemopy.decomposition" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="chemopy.decomposition.PCA">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chemopy.decomposition.</span></span><span class="sig-name descname"><span class="pre">PCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.95</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/decomposition/_pca.html#PCA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.decomposition.PCA" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code></p>
+<p>Principal Component Analysis (PCA) Transformer.</p>
+<p>Parameters:
+- n_components: int, optional (default=2)</p>
+<blockquote>
+<div><p>Number of components to keep.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>mean_center: bool, optional (default=False)
+Whether to center the data by subtracting the mean.</p></li>
+<li><p>confidence_level: float, optional (default=0.95)
+Confidence level for calculating Q residuals and Hotelling’s T-squared.</p></li>
+</ul>
+<p>Attributes:
+- <a href="#id1"><span class="problematic" id="id2">explained_variance_</span></a>: array, shape (n_components,)</p>
+<blockquote>
+<div><p>Percentage of variance explained by each of the selected components.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>explained_variance_accumulative: array, shape (n_components,)
+Cumulative explained variance.</p></li>
+<li><p><a href="#id3"><span class="problematic" id="id4">loadings_</span></a>: array, shape (n_features, n_components)
+Principal axes in feature space, representing the directions of maximum variance.</p></li>
+<li><p><a href="#id5"><span class="problematic" id="id6">mean_</span></a>: array, shape (n_features,)
+Mean of the input data if mean_center is True.</p></li>
+<li><p><a href="#id7"><span class="problematic" id="id8">q_limit_</span></a>: float
+Q limit for Q residuals at the specified confidence level.</p></li>
+<li><p><a href="#id9"><span class="problematic" id="id10">q_residuals_</span></a>: array, shape (n_samples,)
+Q residuals for the fitted data.</p></li>
+<li><p><a href="#id11"><span class="problematic" id="id12">q_residuals_predicted_</span></a>: array, shape (n_samples,)
+Predicted Q residuals for new samples.</p></li>
+<li><p><a href="#id13"><span class="problematic" id="id14">t_hotelling_</span></a>: array, shape (n_samples,)
+Hotelling’s T-squared values for the fitted data.</p></li>
+<li><p><a href="#id15"><span class="problematic" id="id16">t_hotelling_predicted_</span></a>: array, shape (n_samples,)
+Predicted Hotelling’s T-squared values for new samples.</p></li>
+<li><p><a href="#id17"><span class="problematic" id="id18">t_limit_</span></a>: float
+T-squared limit at the specified confidence level.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.decomposition.PCA.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/decomposition/_pca.html#PCA.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.decomposition.PCA.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the PCA model to the input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em> or </em><em>pd.DataFrame</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Input data.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – To be compatible with sklearn’s fit method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted PCA model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#chemopy.decomposition.PCA" title="chemopy.decomposition.PCA">PCA</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.decomposition.PCA.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/decomposition/_pca.html#PCA.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.decomposition.PCA.predict" title="Link to this definition"></a></dt>
+<dd><p>Predict the Q residuals and Hotelling’s T-squared for new samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em> or </em><em>pd.DataFrame</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Input data.</p></li>
+<li><p><strong>y</strong> (<em>None</em><em>, </em><em>optional</em>) – to be compatible with sklearn’s predict method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>scores</strong> – Projected data onto the principal components.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array, shape (n_samples, n_components)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the model has not been fitted yet.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chemopy.decomposition.PCA.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemopy/decomposition/_pca.html#PCA.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chemopy.decomposition.PCA.transform" title="Link to this definition"></a></dt>
+<dd><p>Project the input data onto the principal components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em> or </em><em>pd.DataFrame</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Input data.</p></li>
+<li><p><strong>y</strong> (<em>optional</em>) – to be compatible with sklearn’s transform method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>scores</strong> – Projected data onto the principal components.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array, shape (n_samples, n_components)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the model has not been fitted yet.</p></li>
+<li><p><strong>ValueError</strong> – If the input data has less than 5 samples.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gonçalo Guedes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
